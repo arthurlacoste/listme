@@ -1,0 +1,143 @@
+html, body {
+  height: 100%;
+}
+body {
+	background-color: #fff;
+  display: flex;
+flex-direction: column;
+}
+.pointer {cursor: pointer;}
+.ui {
+	&.fixed.top.menu {
+		background-color: #07BEB8;
+		.item {
+			color: #FFFFFF;
+		}
+		.ui.popup {
+			.item {
+				color: #000000;
+			}
+		}
+		#toggle {
+			display: none;
+		}
+		@media (max-width: 768px) {
+			.menu.right {
+				display: none;
+			}
+			#toggle {
+				display: block;
+			}
+		}
+	}
+	&.sidebar.vertical.menu {
+		padding-top: 70px;
+		.item, .title {
+			color: #FFFFFF;
+			font-size: 14px;
+		}
+		.title {
+			padding: 0px 0px;
+		}
+	}
+	&.white.header {
+		color: #FFFFFF;
+	}
+}
+.section {
+	padding: 30px 10px;
+	&.one {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../img/background-2.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    box-shadow: inset 2000px 0 0 0 rgba(245, 232, 206, 0.7);
+
+    &.havelist {
+      height: 200px;
+    }
+		.grid {
+			//background-color: rgba(255, 255, 255, 0.8);
+			padding: 20px;
+			.header {
+				&.title {
+					font-size: 50px;
+				}
+				&.sub {
+					font-size: 15px;
+					.upper {
+						margin-top: 40px;
+						font-weight: bold;
+						font-size: 17px;
+						text-transform: uppercase;
+					}
+				}
+			}
+		}
+	}
+	&.two {
+		background-color: #FFFFFF;
+		min-height: 450px;
+		.grid:not(.animated) {
+			visibility: hidden;
+		}
+	}
+	&.three {
+		background-color: #FFFFFF;
+		min-height: 450px;
+	}
+	&.newlist {
+		background-color: #a08d67;
+	}
+	&.listitems {
+		background-color: #FFFFFF;
+    padding-bottom: 60px;
+	}
+  &.copylink {
+    padding-bottom: 0px;
+  }
+	&.six {
+		background-color: #07BEB8;
+		min-height: 450px;
+	}
+}
+
+#footer {
+  a {
+    color: #9c895f;
+  }
+}
+
+.additem {
+  @media only screen and (min-width: 720px) {
+      width: 450px !important;
+      margin-right: 25px;
+  }
+  @media only screen and (max-width: 720px) {
+      width: 100%;
+      margin-bottom: 12px;
+  }
+}
+
+.remove {
+  display: none !important;
+}
+
+.ui.inverted.button.itemadd {
+  background-color: white;
+  color: rgba(0,0,0,0.8);
+}
+.ui.secondary.button.itemadd {
+    background-color: #a08d67;
+}
+.content.listitems {
+  margin-top: 10px;
+}
+
+.pusher {
+  flex: 1 0 auto;
+}

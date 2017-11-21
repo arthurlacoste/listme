@@ -1,0 +1,26 @@
+{
+  "name": "listme",
+  "version": "1.0.0",
+  "description": "Share lists with your friends",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "clipboard": "^1.7.1",
+    "ddg": "0.0.3",
+    "express": "^4.16.2",
+    "jquery": "^2.2.1",
+    "liquidjs": "^2.0.2",
+    "lowdb": "^1.0.0",
+    "md5": "^2.2.1",
+    "shortid": "^2.2.8"
+  },
+  "scripts": {
+    "start": "pm2 start pm2.json && pm2 monit",
+    "doc": "apidoc -i src/ -o doc/"
+  },
+  "author": "Arthur Lacoste <arthak@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
+  }
+}

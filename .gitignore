@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+
+# Local development
+*.env
+*.dev
+.DS_Store
+
+*.lock
+*.log
+package-lock.json
+
+*db.json

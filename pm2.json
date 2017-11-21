@@ -1,0 +1,22 @@
+{
+  "apps" : [{
+    "name": "api",
+    "script": "src/app.js",
+    "watch": ["src","node_modules"],
+    "ignore_watch" : ["doc", "db"],
+    "port": 1337
+  },
+  {
+    "name": "static",
+    "watch": ["static","index.html"],
+    "script": "/usr/local/bin/http-server",
+    "port": 8080
+  },
+  {
+    "name": "less",
+    "watch": ["static/assets/less/main.less"],
+    "script": "/usr/local/bin/lessc",
+    "args": ["static/assets/less/main.less",
+      "static/assets/css/main.css"]
+  }]
+}

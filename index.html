@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Listme</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" type="text/css" href="static/assets/css/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="static/assets/css/main.css">
+  <link rel="stylesheet" type="text/css" href="static/assets/css/animate.css">
+  <link rel="stylesheet" type="text/css" href="static/assets/css/flexslider.css">
+</head>
+
+<body>
+
+  <div class="pusher">
+    <div class="section one" id="section-one">
+      <div class="ui center aligned grid container">
+        <div class="column">
+          <h3 class="ui header">Add your own items, and share them with your friends</h3>
+          <form id="add_newlist" class="ui form" method="post" action="http://localhost:1337/add_newlist">
+            <div class="field">
+              <div class="ui huge input additem">
+                <input type="text" autocomplete="off" id="newitem" name="item" data-validate="text" placeholder="Titanic">
+              </div>
+              <button type="submit" value="Add" class="ui huge secondary submit button itemadd">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="section copylink remove ui container">
+      <div class="ui container">
+        <div class="ui centered stackable grid">
+          <div class="sixteen wide column right aligned">
+            <div class="ui mini action input">
+              <input id="copyurl" type="text" value="">
+              <button id="copybtn" data-content="Copied!" class="btn ui right labeled icon button" data-clipboard-action="copy" data-clipboard-target="#copyurl">
+                <i class="copy icon"></i>
+                Copy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="section listitems remove" id="listitems-section">
+      <div id="listitems" class="ui container">
+        </div>
+
+      </div>
+
+    </div>
+
+<div id="onfooter">
+    <div class="section newlist remove" id="newlist">
+      <div class="ui container">
+        <div class="ui centered stackable grid">
+          <div class="six wide column">
+            <a href="/" class="ui fluid massive inverted button">New list</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section seven" id="footer" align="center">
+      Made with <i class="heart icon"></i>by <a href="http://arthurlacoste.com">@arthurlacoste</a>. Fork it on <a href="#">Github</a> !
+    </div>
+  </div>
+  </div>
+  <script type="text/javascript" src="static/assets/js/jquery.min.js"></script>
+  <script type="text/javascript" src="static/assets/js/semantic.min.js"></script>
+  <script type="text/javascript" src="node_modules/liquidjs/dist/liquid.min.js"></script>
+  <script type="text/javascript" src="node_modules/clipboard/dist/clipboard.min.js"></script>
+  <script type="text/javascript" src="static/assets/js/main.js"></script>
+
+
+</body>
+
+</html>
