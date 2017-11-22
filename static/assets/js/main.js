@@ -1,4 +1,4 @@
-var apiurl = 'http://192.168.0.27:1337/';
+var apiurl = 'https://listme-jtirklafwa.now.sh';
 
 $(document).ready(function() {
   new Clipboard('.btn');

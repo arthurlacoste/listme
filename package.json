@@ -15,7 +15,8 @@
     "shortid": "^2.2.8"
   },
   "scripts": {
-    "start": "pm2 start pm2.json && pm2 monit",
+    "start": "node src/app",
+    "test": "pm2 start pm2.json && pm2 monit",
     "doc": "apidoc -i src/ -o doc/"
   },
   "author": "Arthur Lacoste <arthak@gmail.com>",
