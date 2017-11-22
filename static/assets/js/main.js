@@ -1,15 +1,3 @@
-var apiurl = 'http://localhost:1337/';
-
-/*
-
-{% if (site.github) %}
-  *{{ comment }}{{ endcomment }}/
-  console.log('test');
-  apiurl = 'https://listmeapi.irz.fr/'
-  /{{ comment }}{{ endcomment }}*
-{% endif %}
-
-*/
 
 
 $(document).ready(function() {
