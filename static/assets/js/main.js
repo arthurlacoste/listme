@@ -1,4 +1,9 @@
 
+var apiurl = 'http://localhost:1337/';
+
+if(window.location.host==='listme.irz.fr') {
+  apiurl = 'http://i_need_to_host_it/';
+}
 
 $(document).ready(function() {
   new Clipboard('.btn');
