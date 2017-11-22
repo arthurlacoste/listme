@@ -1,4 +1,4 @@
-var apiurl = 'https://listme-jtirklafwa.now.sh/';
+var apiurl = 'https://listme-wyxmqkjzwu.now.sh/';
 
 $(document).ready(function() {
   new Clipboard('.btn');
