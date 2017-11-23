@@ -5,11 +5,11 @@ Listme is a tool to make lists and share with your friends.
 Each element can be upvoted or downvoted. Usefull for :
 - a movie list with your girlfriend
 - a gift list for a friend
-- a shopping list with your roomates
+- a shopping list with your roommates
 
 ## Features
 
-- Upvote or downvote an item (IP are checked to avoid)
+- Upvote or down vote an item (IP are checked to avoid)
 
 [Start to make lists !](https://listme.irz.fr)
 
@@ -24,7 +24,7 @@ Listme provides a simple API to make your own apps using the same engine.
 
 - [Check the API REST doc](doc/)
 
-## Developement
+## Developpement
 
 ```shell
 git clone https://github.com/arthurlacoste/listme
