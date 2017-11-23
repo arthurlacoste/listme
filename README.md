@@ -18,13 +18,19 @@ Each element can be upvoted or downvoted. Usefull for :
 - [Ideas for listme](https://listme.irz.fr/#ByPKjG4xz)
 - [Best movies ever](https://listme.irz.fr/#SkLDW7Exf)
 
-## API
+## Developpement
+
+### API
 
 Listme provides a simple API to make your own apps using the same engine.
 
-- [Check the API REST doc](doc/)
+- [Check the API REST doc](https://listme.irz.fr/doc/)
 
-## Developpement
+### Install
+
+Project is made in two separate routes :
+- static content for render, client side (including Liquid templating) & host on Github Pages
+- Node process as [API REST](https://listme.irz.fr/doc/), who host and talk with database
 
 ```shell
 git clone https://github.com/arthurlacoste/listme
