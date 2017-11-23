@@ -13,7 +13,7 @@ Each element can be upvoted or downvoted. Usefull for :
 
 [Start to make lists !](https://listme.irz.fr)
 
-##List of lists
+## List of lists
 
 - [Ideas for listme](https://listme.irz.fr/#ByPKjG4xz)
 - [Best movies ever](https://listme.irz.fr/#SkLDW7Exf)
