@@ -1,8 +1,8 @@
-
+// For dev or prod env 
 var apiurl = 'http://localhost:1337/';
 
 if(window.location.host==='listme.irz.fr') {
-  apiurl = 'http://i_need_to_host_it/';
+  apiurl = 'https://listmeapi.irz.fr/';
 }
 
 $(document).ready(function() {
