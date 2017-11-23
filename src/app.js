@@ -70,7 +70,7 @@ app.get('/', (req, res) => {
 		return res.json({error: 'No item given'});
 	}
 	const id = shortid.generate();
-	const adapter = new FileAsync(`db/items/${id}.db.json`);
+	const adapter = new FileAsync(`${__dirname}/../db/items/${id}.db.json`);
 
 	const ip = res.locals.ip;
 
@@ -130,7 +130,7 @@ app.get('/', (req, res) => {
 		return res.json({error: 'No item given'});
 	}
 
-	const adapter = new FileAsync(`db/items/${req.params.listid}.db.json`);
+	const adapter = new FileAsync(`${__dirname}/../db/items/${req.params.listid}.db.json`);
 	const ip = res.locals.ip;
 
 	const item = {
@@ -188,7 +188,7 @@ app.get('/', (req, res) => {
 	}
 	const listid = req.params.listid.toString();
 	const itemid = req.params.itemid;
-	const adapter = new FileAsync(`db/items/${listid}.db.json`);
+	const adapter = new FileAsync(`${__dirname}/../db/items/${listid}.db.json`);
 	const ip = res.locals.ip;
 	const vote = (req.params.vote === '1') ? 1 : -1;
 
@@ -235,7 +235,7 @@ app.get('/', (req, res) => {
 		return res.json({error: 'No item given'});
 	}
 	const listid = req.params.listid.toString();
-	const adapter = new FileAsync(`db/items/${listid}.db.json`);
+	const adapter = new FileAsync(`${__dirname}/../db/items/${listid}.db.json`);
 	const ip = res.locals.ip;
 
 	low(adapter).then(db => {
