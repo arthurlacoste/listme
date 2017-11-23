@@ -1,4 +1,4 @@
-// For dev or prod env 
+// For dev or prod env
 var apiurl = 'http://localhost:1337/';
 
 if(window.location.host==='listme.irz.fr') {
@@ -21,10 +21,10 @@ $(document).ready(function() {
     on: 'hover'
   });
 
-  $(document).on('DOMSubtreeModified', '#listitems', function () {
+  /*$(document).on('DOMSubtreeModified', '#listitems', function () {
     $('.ui.checkbox').checkbox();
   });
-
+*/
   $('.ui.fluid.card.full')
   .dimmer({
     on: 'hover'
@@ -36,12 +36,14 @@ $(document).ready(function() {
     getList(hash, 'get/' + hash);
   }
 
-  $(this).on('click', '.vote', function () {
+  $('#listitems').on('click', '.vote', function () {
     var call = $(this).attr('data-call');
     console.log(call)
     getList(hash, call, true);
 
   });
+
+
   /**
   * Template a file and push it to #listitems
   * @param {String} view URL of the file

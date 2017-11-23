@@ -4,11 +4,11 @@
 <div class="item-{{ i }} ui middle selection aligned divided list">
 <div class="item">
   <div class="right floated content">
-    <button class="ui icon button {% if item.up == true %}positive{% endif %}">
-      <i class="vote arrow up icon" data-call="vote/{{ id }}/{{ i }}/1"></i>
+    <button class="vote ui icon button {% if item.up == true %}positive{% endif %}" data-call="vote/{{ id }}/{{ i }}/1">
+      <i class="arrow up icon"></i>
     </button>
-    <button class="ui icon button {% if item.down == true %}negative{% endif %}">
-      <i class="vote arrow down icon" data-call="vote/{{ id }}/{{ i }}/0"></i>
+    <button class="vote ui icon button {% if item.down == true %}negative{% endif %}" data-call="vote/{{ id }}/{{ i }}/0">
+      <i class="arrow down icon"></i>
     </button>
   </div>
   <div class="content listitems">
