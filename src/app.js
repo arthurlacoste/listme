@@ -9,6 +9,7 @@ const liststate = require('./liststate');
 
 const app = express();
 const port = process.env.PORT || 1337;
+const striptag = /(<([^>]+)>)/ig;
 
 app.set('trust proxy', '9.9.9.9');
 
@@ -78,7 +79,7 @@ app.get('/', (req, res) => {
 		id,
 		ip,
 		items: [{
-			label: req.body.item,
+			label: req.body.item.replace(striptag, ''),
 			value: 1,
 			check: false,
 			votes: {
@@ -134,7 +135,7 @@ app.get('/', (req, res) => {
 	const ip = res.locals.ip;
 
 	const item = {
-		label: req.body.item,
+		label: req.body.item.replace(striptag, ''),
 		value: 1,
 		check: false,
 		votes: {
