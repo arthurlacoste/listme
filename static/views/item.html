@@ -2,24 +2,28 @@
 {% for item in items reversed %}
 {% decrement i %}
 <div class="item-{{ i }} ui middle selection aligned divided list">
-<div class="item">
-  <div class="right floated content">
-    <button class="vote ui icon button {% if item.up == true %}positive{% endif %}" data-call="vote/{{ id }}/{{ i }}/1">
-      <i class="arrow up icon"></i>
-    </button>
-    <button class="vote ui icon button {% if item.down == true %}negative{% endif %}" data-call="vote/{{ id }}/{{ i }}/0">
-      <i class="arrow down icon"></i>
-    </button>
-  </div>
-  <div class="content listitems">
-    <div class="inline field">
-      <div class="ui checkbox">
-        <input type="checkbox" id="item-{{ i }}" tabindex="0" class="hidden">
-        <label>{{ item.label }}</label>
+  <div class="item">
+    <div class="right floated content">
+      <div class="ui icon buttons tiny">
+        <button class="vote ui icon button {% if item.up == true %}positive{% endif %}" data-call="vote/{{ id }}/{{ i }}/1">
+          {{ item.value }} <i class="arrow up icon"></i>
+        </button>
+        <button class="vote ui icon button {% if item.down == true %}negative{% endif %}" data-call="vote/{{ id }}/{{ i }}/0">
+          <i class="arrow down icon"></i>
+        </button>
       </div>
     </div>
+    <div class="content listitems">
+      <div class="inline field">
+        <div class="ui checkbox itemcheck">
+          <input type="checkbox" id="item-{{ i }}" tabindex="0" class="hidden">
+
+          <label> {{ item.label }}</label>
+        </div>
+      </div>
+    </div>
+
   </div>
-</div>
 </div>
 
 <div class="guess-img-{{ i }} ui four column stackable grid">

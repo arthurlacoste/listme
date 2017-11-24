@@ -96,6 +96,8 @@ body {
 }
 .section.copylink {
   padding-bottom: 0px;
+  padding-right: 7px;
+  margin: 0px;
 }
 .section.six {
   background-color: #07BEB8;
@@ -126,9 +128,9 @@ body {
 .ui.secondary.button.itemadd {
   background-color: #a08d67;
 }
-.content.listitems {
-  margin-top: 10px;
-}
 .pusher {
   flex: 1 0 auto;
+}
+.ui.checkbox.itemcheck {
+  padding-top: 8px;
 }
