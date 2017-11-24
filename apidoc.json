@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "url" : "http://192.168.0.27:1337",
-  "sampleUrl" : "https://listme-jtirklafwa.now.sh",
+  "url" : "http://localhost:1337",
+  "sampleUrl" : "https://listmeapi.irz.fr",
   "template": {
   	"withCompare": true,
   	"withGenerator": true
