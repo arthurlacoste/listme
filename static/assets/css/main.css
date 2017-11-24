@@ -134,3 +134,6 @@ body {
 .ui.checkbox.itemcheck {
   padding-top: 8px;
 }
+.ui.checkbox .hole {
+  color: #cacaca;
+}
