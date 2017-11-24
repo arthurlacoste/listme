@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const ddg = require('ddg');
@@ -10,6 +11,10 @@ const liststate = require('./liststate');
 const app = express();
 const port = process.env.PORT || 1337;
 const striptag = /(<([^>]+)>)/ig;
+
+const dbpath = function (type, id) {
+	return `${__dirname}/../db/${type}/${id}.db.json`;
+};
 
 app.set('trust proxy', '9.9.9.9');
 
@@ -39,7 +44,7 @@ app.get('/', (req, res) => {
 /**
 * @api {post} /add_newlist Add a new list
 * @apiExample {curl} Example usage:
-*     curl -d "item=NewItem" -X POST  http://localhost:1337/add_newlist
+*     curl -d "item=NewItem" -X POST  https://listmeapi.irz.fr/add_newlist
 *
 * @apiName Add new list
 * @apiGroup List
@@ -52,15 +57,22 @@ app.get('/', (req, res) => {
 *
 * HTTP/1.1 200 OK
 * {
-*   "label": "Mato",
-*   "value": 1,
-*   "check": false,
-*   "votes": {
-*     "daed2ea711207043e266357feaf23399": 1
-*   },
-*   "key": "2",
-*   "up": true,
-*   "down": false
+*     "id": "HkFuKaBlz",
+*     "ip": "5163cfea8f004a33914db5b4509f9b57",
+*     "items": [
+*         {
+*             "label": "item",
+*             "value": 1,
+*             "check": false,
+*             "votes": {
+*                 "5163cfea8f004a33914db5b4509f9b57": 1
+*             },
+*             "key": "0",
+*             "up": false,
+*             "down": false
+*         }
+*     ],
+*     "currentip": "ec2a229c636db8e9db211573d9ac6f0d"
 * }
 *
 */
@@ -70,8 +82,9 @@ app.get('/', (req, res) => {
 		res.status(500);
 		return res.json({error: 'No item given'});
 	}
+
 	const id = shortid.generate();
-	const adapter = new FileAsync(`${__dirname}/../db/items/${id}.db.json`);
+	const adapter = new FileAsync(dbpath('items', id));
 
 	const ip = res.locals.ip;
 
@@ -98,7 +111,7 @@ app.get('/', (req, res) => {
 /**
 * @api {post} /add/:listid Add an item to a list
 * @apiExample {curl} Example usage:
-*     curl -d "item=NewItem" -X POST  http://localhost:1337/add/ryVlDRZxM
+*     curl -d "item=NewItem" -X POST  https://listmeapi.irz.fr/add/ryVlDRZxM
 *
 * @apiName Add item
 * @apiGroup List
@@ -112,15 +125,22 @@ app.get('/', (req, res) => {
 *
 * HTTP/1.1 200 OK
 * {
-*   "label": "Mato",
-*   "value": 1,
-*   "check": false,
-*   "votes": {
-*     "daed2ea711207043e266357feaf23399": 1
-*   },
-*   "key": "2",
-*   "up": true,
-*   "down": false
+*     "id": "HkFuKaBlz",
+*     "ip": "5163cfea8f004a33914db5b4509f9b57",
+*     "items": [
+*         {
+*             "label": "item",
+*             "value": 1,
+*             "check": false,
+*             "votes": {
+*                 "5163cfea8f004a33914db5b4509f9b57": 1
+*             },
+*             "key": "0",
+*             "up": false,
+*             "down": false
+*         }
+*     ],
+*     "currentip": "ec2a229c636db8e9db211573d9ac6f0d"
 * }
 *
 */
@@ -130,31 +150,39 @@ app.get('/', (req, res) => {
 		res.status(500);
 		return res.json({error: 'No item given'});
 	}
+	const path = dbpath('items', req.params.listid);
 
-	const adapter = new FileAsync(`${__dirname}/../db/items/${req.params.listid}.db.json`);
-	const ip = res.locals.ip;
+	if (fs.existsSync(path)) {
+    // Do something
 
-	const item = {
-		label: req.body.item.replace(striptag, ''),
-		value: 1,
-		check: false,
-		votes: {
-			[ip]: 1
-		}
-	};
+		const adapter = new FileAsync(path);
+		const ip = res.locals.ip;
 
-	low(adapter).then(db => {
-		let list = db.getState();
-		list.items.push(item);
-		list = liststate(list, ip);
-		db.setState(list).write().then(() => res.json(list));
-	});
+		const item = {
+			label: req.body.item.replace(striptag, ''),
+			value: 1,
+			check: false,
+			votes: {
+				[ip]: 1
+			}
+		};
+
+		low(adapter).then(db => {
+			let list = db.getState();
+			list.items.push(item);
+			list = liststate(list, ip);
+			db.setState(list).write().then(() => res.json(list));
+		});
+	} else {
+		res.status(500);
+		return res.json({error: 'This list doesn\'t exist.'});
+	}
 })
 
 /**
 * @api {get} /vote/:listid/:itemid/:vote Vote to an item of a list
 * @apiExample {curl} Example usage:
-*     curl -i  http://localhost:1337/vote/ryVlDRZxM/0/1
+*     curl -i  https://listmeapi.irz.fr/vote/ryVlDRZxM/0/1
 *
 * @apiName Send vote for an item
 * @apiGroup List
@@ -169,15 +197,22 @@ app.get('/', (req, res) => {
 *
 * HTTP/1.1 200 OK
 * {
-*   "label": "Mato",
-*   "value": 1,
-*   "check": false,
-*   "votes": {
-*     "daed2ea711207043e266357feaf23399": 1
-*   },
-*   "key": "2",
-*   "up": true,
-*   "down": false
+*     "id": "HkFuKaBlz",
+*     "ip": "5163cfea8f004a33914db5b4509f9b57",
+*     "items": [
+*         {
+*             "label": "item",
+*             "value": 1,
+*             "check": false,
+*             "votes": {
+*                 "5163cfea8f004a33914db5b4509f9b57": 1
+*             },
+*             "key": "0",
+*             "up": false,
+*             "down": false
+*         }
+*     ],
+*     "currentip": "ec2a229c636db8e9db211573d9ac6f0d"
 * }
 *
 */
@@ -187,24 +222,100 @@ app.get('/', (req, res) => {
 		res.status(500);
 		return res.json({error: 'No item given'});
 	}
-	const listid = req.params.listid.toString();
-	const itemid = req.params.itemid;
-	const adapter = new FileAsync(`${__dirname}/../db/items/${listid}.db.json`);
-	const ip = res.locals.ip;
-	const vote = (req.params.vote === '1') ? 1 : -1;
+	const path = dbpath('items', req.params.listid.toString());
 
-	low(adapter).then(db => {
-		let list = db.getState();
-		list.items[itemid].votes[ip] = vote;
-		list = liststate(list, ip);
-		db.setState(list).write().then(() => res.json(list));
-	});
+	if (fs.existsSync(path)) {
+		const itemid = req.params.itemid;
+		const adapter = new FileAsync(path);
+		const ip = res.locals.ip;
+		const vote = (req.params.vote === '1') ? 1 : -1;
+
+		low(adapter).then(db => {
+			let list = db.getState();
+			list.items[itemid].votes[ip] = vote;
+			list = liststate(list, ip);
+			db.setState(list).write().then(() => res.json(list));
+		});
+	} else {
+		res.status(500);
+		return res.json({error: 'This list doesn\'t exist.'});
+	}
+})
+
+/**
+* @api {post} /settings/:listid Set settings for a list
+* @apiExample {curl} Example usage:
+*     curl -i  https://listmeapi.irz.fr/settings/ryVlDRZxM
+*
+* @apiName Set settings
+* @apiGroup List
+* @apiDescription You can set settings of a list if you are the owner (checked by IP).
+*
+* @apiParam {String} :listid List hash
+* @apiParam {String} name Name of the list
+*
+* @apiSuccess {Object} list Item list
+*
+* @apiSuccessExample Success-Response:
+*
+* HTTP/1.1 200 OK
+* {
+*     "id": "HkFuKaBlz",
+*     "ip": "5163cfea8f004a33914db5b4509f9b57",
+*     "items": [
+*         {
+*             "label": "item",
+*             "value": 1,
+*             "check": false,
+*             "votes": {
+*                 "5163cfea8f004a33914db5b4509f9b57": 1
+*             },
+*             "key": "0",
+*             "up": false,
+*             "down": false
+*         }
+*     ],
+*     "currentip": "ec2a229c636db8e9db211573d9ac6f0d"
+* }
+*
+*/
+
+.post('/settings/:listid', (req, res) => {
+	if (!req.params.listid) {
+		res.status(500);
+		return res.json({error: 'No item given'});
+	}
+	const path = dbpath('items', req.params.listid.toString());
+
+	if (fs.existsSync(path)) {
+		const adapter = new FileAsync(path);
+		const ip = res.locals.ip;
+
+		low(adapter).then(db => {
+			let list = db.getState();
+
+      // If it's owner, he can edit settings
+			if (ip === list.ip) {
+				if (req.body.name) {
+					list.name = req.body.name;
+				}
+				list = liststate(list, ip);
+				db.setState(list).write().then(() => res.json(list));
+			} else {
+				res.status(500);
+				return res.json({error: 'You are not the owner of the list.'});
+			}
+		});
+	} else {
+		res.status(500);
+		return res.json({error: 'This list doesn\'t exist.'});
+	}
 })
 
 /**
 * @api {get} /get/:listid Get list
 * @apiExample {curl} Example usage:
-*     curl -i  http://localhost:1337/get/ryVlDRZxM
+*     curl -i  https://listmeapi.irz.fr/get/ryVlDRZxM
 *
 * @apiName Get list
 * @apiGroup List
@@ -217,15 +328,22 @@ app.get('/', (req, res) => {
 *
 * HTTP/1.1 200 OK
 * {
-*   "label": "Mato",
-*   "value": 1,
-*   "check": false,
-*   "votes": {
-*     "daed2ea711207043e266357feaf23399": 1
-*   },
-*   "key": "2",
-*   "up": true,
-*   "down": false
+*     "id": "HkFuKaBlz",
+*     "ip": "5163cfea8f004a33914db5b4509f9b57",
+*     "items": [
+*         {
+*             "label": "item",
+*             "value": 1,
+*             "check": false,
+*             "votes": {
+*                 "5163cfea8f004a33914db5b4509f9b57": 1
+*             },
+*             "key": "0",
+*             "up": false,
+*             "down": false
+*         }
+*     ],
+*     "currentip": "ec2a229c636db8e9db211573d9ac6f0d"
 * }
 *
 */
@@ -235,15 +353,21 @@ app.get('/', (req, res) => {
 		res.status(500);
 		return res.json({error: 'No item given'});
 	}
-	const listid = req.params.listid.toString();
-	const adapter = new FileAsync(`${__dirname}/../db/items/${listid}.db.json`);
-	const ip = res.locals.ip;
+	const path = dbpath('items', req.params.listid.toString());
 
-	low(adapter).then(db => {
-		let list = db.getState();
-		list = liststate(list, ip);
-		res.json(list);
-	});
+	if (fs.existsSync(path)) {
+		const adapter = new FileAsync(path);
+		const ip = res.locals.ip;
+
+		low(adapter).then(db => {
+			let list = db.getState();
+			list = liststate(list, ip);
+			res.json(list);
+		});
+	} else {
+		res.status(500);
+		return res.json({error: 'This list doesn\'t exist.'});
+	}
 })
 
 // Get all results from duckduckgo
