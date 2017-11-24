@@ -96,12 +96,14 @@ body {
 }
 .section.copylink {
   padding-bottom: 0px;
-  padding-right: 7px;
   margin: 0px;
 }
 .section.six {
   background-color: #07BEB8;
   min-height: 450px;
+}
+#footer {
+  text-align: center;
 }
 #footer a {
   color: #9c895f;
@@ -136,4 +138,52 @@ body {
 }
 .ui.checkbox .hole {
   color: #cacaca;
+}
+/* Settings Bar */
+#settingsbar {
+  padding-right: 7px;
+  padding-left: 7px;
+}
+@media only screen and (min-width: 720px) {
+  #listname {
+    position: absolute;
+  }
+}
+@media only screen and (max-width: 720px) {
+  #listname {
+    padding-bottom: 20px;
+  }
+}
+@media only screen and (min-width: 720px) {
+  .sixteen.wide.column.aligned {
+    text-align: right;
+    -webkit-align-self: inherit;
+    -ms-flex-item-align: inherit;
+    align-self: inherit;
+  }
+}
+/* Settings Modal */
+.ui.right.floated.inverted.button {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+.ui.form .field label.modalinvert {
+  color: #fff;
+  font-size: 1em;
+  font-weight: 900;
+  margin-bottom: 0.95714rem;
+}
+.ui.form .field .ui.transparent.inverted.input input {
+  color: #fff;
+  font-size: 1em;
+  font-weight: 900;
+  border-bottom-color: #cacaca !important;
+  padding-bottom: 10px !important;
+  border-bottom-width: 1px;
+}
+.ui.form .field .ui.transparent.inverted.input input:focus {
+  border-bottom-color: white;
+}
+.ui.icon.header {
+  padding-right: 21px;
 }

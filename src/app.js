@@ -180,12 +180,12 @@ app.get('/', (req, res) => {
 })
 
 /**
-* @api {get} /vote/:listid/:itemid/:vote Vote to an item of a list
+* @api {get} /vote/:listid/:itemid/:vote Vote
 * @apiExample {curl} Example usage:
 *     curl -i  https://listmeapi.irz.fr/vote/ryVlDRZxM/0/1
 *
 * @apiName Send vote for an item
-* @apiGroup List
+* @apiGroup Item
 *
 * @apiParam {String} :listid List hash
 * @apiParam {String} :itemid Key of item

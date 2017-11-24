@@ -16,39 +16,75 @@
 
 <body>
 
+  <div class="ui tiny basic modal">
+    <div class="ui icon header">
+      <i class="setting icon"></i>
+      Settings
+    </div>
+    <div class="content">
+      <div class="ui form inverted">
+        <form id="settings_form" class="ui form" method="post" action="#">
+          <div class="field">
+            <label class="modalinvert">List name</label>
+            <div class="ui transparent inverted input">
+              <input type="text" name="name" placeholder="Name of my list">
+            </div>
+          </div>
+
+          <div>
+            <button type="submit" class="ui green ok inverted button right floated submitbtn">
+              <i class="checkmark icon"></i>
+              Ok
+            </button>
+            <div id="cancel_modal" class="ui red basic cancel inverted button right floated">
+              <i class="remove icon"></i>
+              Cancel
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <div class="pusher">
     <div class="section one" id="section-one">
       <div class="ui center aligned grid container">
         <div class="column">
           <h3 class="ui header">Add your own items, and share them with your friends</h3>
-          <form id="add_newlist" class="ui form" method="post" action="">
+          <form id="add_newlist" class="ui form" method="post" action="#">
             <div class="field">
               <div class="ui huge input additem">
                 <input type="text" autocomplete="off" id="newitem" name="item" data-validate="text" placeholder="Titanic">
               </div>
-              <button type="submit" value="Add" class="ui huge secondary submit button itemadd">Add</button>
+              <button type="submit" value="Add" class="ui huge secondary submit button itemadd submitbtn">Add</button>
             </div>
           </form>
         </div>
       </div>
     </div>
 
-    <div class="section copylink remove ui container">
+    <div class="section copylink remove">
       <div class="ui container">
         <div class="ui centered stackable grid">
-          <div class="sixteen wide column right aligned">
-            <div class="ui mini action input">
-              <input id="copyurl" type="text" value="">
-              <button id="copybtn" data-content="Copied!" class="btn ui right labeled icon button" data-clipboard-action="copy" data-clipboard-target="#copyurl">
-                <i class="copy icon"></i>
-                Copy
-              </button>
+          <div class="sixteen wide column aligned">
+            <div id="settingsbar">
+              <div id="listname"></div>
+              <div class="ui mini action input">
+                <input id="copyurl" type="text" value="">
+                <button id="copybtn" data-content="Copied!" class="btn ui right basic icon button" data-clipboard-action="copy" data-clipboard-target="#copyurl">
+                  <i class="copy icon"></i>
+                </button>
+                <button id="settings" class="ui small icon button remove">
+                  <i class="large setting icon"></i>
+                </button>
+              </div>
+
+
             </div>
           </div>
         </div>
       </div>
     </div>
-
 
     <div class="section listitems remove" id="listitems-section">
       <div id="listitems" class="ui container">
@@ -57,7 +93,6 @@
     </div>
 
   </div>
-
   <div id="onfooter">
     <div class="section newlist remove" id="newlist">
       <div class="ui container">
@@ -69,7 +104,7 @@
       </div>
     </div>
 
-    <div class="section seven" id="footer" align="center">
+    <div class="section seven" id="footer">
       Made with <i class="heart icon"></i>by <a href="http://arthurlacoste.com">@arthurlacoste</a>. Fork it on <a href="https://github.com/arthurlacoste/listme">Github</a> !
     </div>
   </div>

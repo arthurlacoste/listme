@@ -1,5 +1,5 @@
 // For dev or prod env
-var apiurl = 'http://localhost:1337/';
+var apiurl = 'http://192.168.0.27:1337/';
 
 if(window.location.host==='listme.irz.fr') {
   apiurl = 'https://listmeapi.irz.fr/';
@@ -7,6 +7,26 @@ if(window.location.host==='listme.irz.fr') {
 
 $(document).ready(function() {
   new Clipboard('.btn');
+
+  //$('.ui.basic.modal').modal();
+/*
+  $(document).on('click', '#settings', function () {
+    $('.ui.basic.modal').modal('show');
+  });
+*/
+
+$(function(){
+	$("#settings").click(function(){
+		$(".ui.basic.modal").modal('show');
+	});
+	$(".ui.basic.modal").modal({
+		closable: true
+	});
+  $("#cancel_modal").click(function(){
+    $(".ui.basic.modal").modal('hide');
+  });
+
+});
 
   $('#copybtn').popup({
     on : 'click'
@@ -69,15 +89,29 @@ function liquidRender (view, args) {
 });
 }
 
-function existingList(id) {
+function displayListName(list) {
+  return '';
+}
+
+function existingList(data) {
+  if(data.name) {
+    $('#listname').html('<h1>' + data.name + '</h1>')
+  }
+
+  if(data.ip===data.currentip) {
+    $('#settings').removeClass('remove');
+  }
+
   $('#listitems-section').removeClass('remove');
-  $('#add_newlist').attr('action', apiurl + 'add/' + id)
+  $('#add_newlist').attr('action', apiurl + 'add/' + data.id)
+  $('#settings_form').attr('action', apiurl + 'settings/' + data.id)
   $('#newlist').removeClass('remove');
-  $('#copyurl').val(window.location.origin + '#' + id);
+  $('#copyurl').val(window.location.origin + '/#' + data.id);
   $('.copylink').removeClass('remove');
   $('#newitem').attr('placeholder', '');
-  $('#newitem').focus()
+  $('#newitem').focus();
 }
+
 /**
 *  Get the list of all items and push it to #listitems
 * @param {number} id Identifiant of the list wanted
@@ -93,12 +127,12 @@ function getList (id, path, alreadyExist) {
       liquidRender('item.html', data);
 
       // Take less height
-      $('.section.one').animate({
+      $('.section.one').css({
         height: 200
-      }, 600);
+      });
 
       if (!alreadyExist) {
-        existingList(id);
+        existingList(data);
       }
     },
     error: function (err) {
@@ -111,11 +145,11 @@ function getList (id, path, alreadyExist) {
 (function ($) {
   var $comments = $('.js-comments');
 
-  $('#add_newlist').submit(function () {
+  $('#add_newlist, #settings_form').submit(function () {
     //e.preventDefault();
     var form = this;
     console.log($(this).attr('id'));
-    $(form).addClass('disabled');
+    $('.submitbtn').addClass('loading');
     $('#comment-form-submit').html('<i class="fa fa-spinner fa-spin fa-fw"></i> {{ site.data.ui-text[site.locale].loading_label | default: "Loading..." }}');
 
     $.ajax({
@@ -125,7 +159,7 @@ function getList (id, path, alreadyExist) {
       data: $(this).serialize(),
       contentType: 'application/x-www-form-urlencoded',
       success: function (data) {
-
+        $('.submitbtn').removeClass('loading');
         // What i've gooooot ?
         console.log(data);
 
@@ -138,9 +172,14 @@ function getList (id, path, alreadyExist) {
         // Render
         liquidRender('item.html', data);
 
-        existingList(data.id)
+        existingList(data)
 
         window.history.replaceState(null, null, '#' + data.id);
+
+        if(data.name) {
+          $('#listname').html('<h1>' + data.name + '</h1>')
+        }
+        $(".ui.basic.modal").modal('hide');
 
         // Take less height
         $('.section.one').animate({
@@ -150,8 +189,9 @@ function getList (id, path, alreadyExist) {
         hash = data.id;
       },
       error: function (err) {
-        console.log(err);
-        showAlert('{{ site.data.ui-text[site.locale].comment_error_msg | default: "Sorry, there was an error with your submission. Please make sure all required fields have been completed and try again." }}');
+        $('.submitbtn').removeClass('loading');
+        console.log(err.responseJSON.error);
+
         $(form).removeClass('disabled');
       }
     });

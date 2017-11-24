@@ -99,7 +99,6 @@ flex-direction: column;
 	}
   &.copylink {
     padding-bottom: 0px;
-    padding-right: 7px;
     margin: 0px;
   }
 	&.six {
@@ -109,6 +108,7 @@ flex-direction: column;
 }
 
 #footer {
+  text-align: center;
   a {
     color: #9c895f;
   }
@@ -150,4 +150,64 @@ flex-direction: column;
   .hole {
     color: #cacaca;
   }
+}
+
+/* Settings Bar */
+
+#settingsbar {
+  padding-right: 7px;
+  padding-left: 7px;
+}
+
+#listname{
+  @media  only screen and (min-width: 720px) {
+    position: absolute;
+  }
+  @media  only screen and (max-width: 720px) {
+    padding-bottom: 20px;
+  }
+}
+
+.sixteen.wide.column.aligned {
+  @media  only screen and (min-width: 720px) {
+    text-align: right;
+    -webkit-align-self: inherit;
+    -ms-flex-item-align: inherit;
+    align-self: inherit;
+  }
+}
+
+/* Settings Modal */
+
+.ui.right.floated.inverted.button {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.ui.form {
+  .field label.modalinvert {
+    color: #fff;
+    font-size: 1em;
+    font-weight: 900;
+    margin-bottom: 0.95714rem;
+  }
+
+  .field .ui.transparent.inverted.input input {
+    color: #fff;
+    font-size: 1em;
+    font-weight: 900;
+    border-bottom-color: #cacaca !important;
+    padding-bottom: 10px !important;
+    border-bottom-width: 1px;
+
+    &:focus {
+      border-bottom-color: white;
+    }
+  }
+}
+
+
+
+.ui.icon.header {
+  padding-right: 21px;
 }
