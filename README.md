@@ -16,6 +16,7 @@ Each element can be upvoted or downvoted. Usefull for :
 ## List of lists
 
 - [Ideas for listme](https://listme.irz.fr/#ByPKjG4xz)
+- [Bug tracker](https://listme.irz.fr/#bugs)
 - [Best movies ever](https://listme.irz.fr/#SkLDW7Exf)
 
 ## Developpement
