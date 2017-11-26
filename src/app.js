@@ -392,7 +392,7 @@ app.get('/', (req, res) => {
 			res.json(list);
 		});
 	} else {
-		res.status(500);
+		res.status(404);
 		return res.json({error: 'This list doesn\'t exist.'});
 	}
 })

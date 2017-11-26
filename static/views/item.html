@@ -5,10 +5,10 @@
   <div class="item">
     <div class="right floated content">
       <div class="ui icon buttons tiny">
-        <button class="vote ui icon button {% if item.up == true %}positive{% endif %}" data-call="vote/{{ id }}/{{ i }}/1">
+        <button class="{% if item.up != true %}vote {% endif %}ui icon button {% if item.up == true %}positive{% endif %}" data-call="vote/{{ id }}/{{ i }}/1">
           {{ item.value }} <i class="arrow up icon"></i>
         </button>
-        <button class="vote ui icon button {% if item.down == true %}negative{% endif %}" data-call="vote/{{ id }}/{{ i }}/0">
+        <button class="{% if item.down != true %}vote {% endif %}ui icon button {% if item.down == true %}negative{% endif %}" data-call="vote/{{ id }}/{{ i }}/0">
           <i class="arrow down icon"></i>
         </button>
       </div>
