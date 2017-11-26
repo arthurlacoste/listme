@@ -167,6 +167,9 @@ body {
   margin-top: 20px;
   margin-left: 10px;
 }
+.ui.form .field {
+  margin: 0 0 1.5em;
+}
 .ui.form .field label.modalinvert {
   color: #fff;
   font-size: 1em;
@@ -183,6 +186,12 @@ body {
 }
 .ui.form .field .ui.transparent.inverted.input input:focus {
   border-bottom-color: white;
+}
+.ui.form .field .ui.transparent.inverted.input div {
+  background-color: transparent;
+  padding-top: 3px;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 .ui.icon.header {
   padding-right: 21px;

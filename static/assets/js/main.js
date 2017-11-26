@@ -1,5 +1,5 @@
 // For dev or prod env
-var apiurl = 'http://192.168.0.27:1337/';
+var apiurl = 'http://' + window.location.hostname + ':1337/';
 
 if(window.location.host==='listme.irz.fr') {
   apiurl = 'https://listmeapi.irz.fr/';
@@ -41,10 +41,6 @@ $(function(){
     on: 'hover'
   });
 
-  /*$(document).on('DOMSubtreeModified', '#listitems', function () {
-  $('.ui.checkbox').checkbox();
-});
-*/
 $('.ui.fluid.card.full')
 .dimmer({
   on: 'hover'
@@ -102,6 +98,7 @@ function existingList(data) {
     $('#settings').removeClass('remove');
   }
 
+  $('.ui.checkbox').checkbox();
   $('#listitems-section').removeClass('remove');
   $('#add_newlist').attr('action', apiurl + 'add/' + data.id)
   $('#settings_form').attr('action', apiurl + 'settings/' + data.id)
@@ -149,8 +146,7 @@ function getList (id, path, alreadyExist) {
     //e.preventDefault();
     var form = this;
     console.log($(this).attr('id'));
-    $('.submitbtn').addClass('loading');
-    $('#comment-form-submit').html('<i class="fa fa-spinner fa-spin fa-fw"></i> {{ site.data.ui-text[site.locale].loading_label | default: "Loading..." }}');
+    $(this).find('.submitbtn').addClass('loading');
 
     $.ajax({
       dataType: "json",
@@ -164,7 +160,7 @@ function getList (id, path, alreadyExist) {
         console.log(data);
 
         // Everything is ok
-        showAlert('Item Added :)))');
+        console.log('Item Added :)))');
 
 
         $('#newitem').val('');
@@ -172,12 +168,12 @@ function getList (id, path, alreadyExist) {
         // Render
         liquidRender('item.html', data);
 
-        existingList(data)
+        existingList(data);
 
         window.history.replaceState(null, null, '#' + data.id);
 
         if(data.name) {
-          $('#listname').html('<h1>' + data.name + '</h1>')
+          $('#listname').html('<h1>' + data.name + '</h1>');
         }
         $(".ui.basic.modal").modal('hide');
 
@@ -189,20 +185,20 @@ function getList (id, path, alreadyExist) {
         hash = data.id;
       },
       error: function (err) {
+        const message = err.responseJSON.error || err;
         $('.submitbtn').removeClass('loading');
-        console.log(err.responseJSON.error);
-
         $(form).removeClass('disabled');
+        showAlert(form, message);
       }
     });
 
     return false;
   });
 
-  function showAlert(message) {
-    console.log(message)
-    $('.page__comments-form .js-notice').removeClass('hidden');
-    $('.page__comments-form .js-notice-text').html(message);
+  function showAlert(form, message) {
+    console.log(message);
+    $(form).find('.js-notice').show();
+    $(form).find('.js-notice-text').html(message);
   }
 })(jQuery);
 

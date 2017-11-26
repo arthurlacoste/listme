@@ -30,7 +30,19 @@
               <input type="text" name="name" placeholder="Name of my list">
             </div>
           </div>
-
+          <div class="field">
+            <label class="modalinvert">Custom url</label>
+            <div class="ui labeled input transparent inverted">
+              <div class="ui label transparent inverted">
+                https://listme.irz.fr/#
+              </div>
+              <input type="text" name="slug" placeholder="">
+            </div>
+          </div>
+          <div class="ui error message newlist js-notice">
+            <div class="header">Houston, we have a problem</div>
+            <p class="js-notice-text">A big problem.</p>
+          </div>
           <div>
             <button type="submit" class="ui green ok inverted button right floated submitbtn">
               <i class="checkmark icon"></i>
@@ -56,7 +68,11 @@
               <div class="ui huge input additem">
                 <input type="text" autocomplete="off" id="newitem" name="item" data-validate="text" placeholder="Titanic">
               </div>
-              <button type="submit" value="Add" class="ui huge secondary submit button itemadd submitbtn">Add</button>
+              <button type="submit" value="Add" class="ui huge secondary submit button itemadd submitbtn newlist">Add</button>
+            </div>
+            <div class="ui error message newlist js-notice">
+              <div class="header">Houston, we have a problem</div>
+              <p class="js-notice-text">A big problem.</p>
             </div>
           </form>
         </div>

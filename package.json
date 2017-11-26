@@ -1,6 +1,6 @@
 {
   "name": "listme",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Share lists with your friends",
   "main": "app.js",
   "dependencies": {
@@ -12,7 +12,8 @@
     "liquidjs": "^2.0.2",
     "lowdb": "^1.0.0",
     "md5": "^2.2.1",
-    "shortid": "^2.2.8"
+    "shortid": "^2.2.8",
+    "slugme": "^1.1.1"
   },
   "scripts": {
     "start": "pm2 start src/app.js",

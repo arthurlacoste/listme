@@ -2,51 +2,51 @@ html, body {
   height: 100%;
 }
 body {
-	background-color: #fff;
+  background-color: #fff;
   display: flex;
-flex-direction: column;
+  flex-direction: column;
 }
 .pointer {cursor: pointer;}
 .ui {
-	&.fixed.top.menu {
-		background-color: #07BEB8;
-		.item {
-			color: #FFFFFF;
-		}
-		.ui.popup {
-			.item {
-				color: #000000;
-			}
-		}
-		#toggle {
-			display: none;
-		}
-		@media (max-width: 768px) {
-			.menu.right {
-				display: none;
-			}
-			#toggle {
-				display: block;
-			}
-		}
-	}
-	&.sidebar.vertical.menu {
-		padding-top: 70px;
-		.item, .title {
-			color: #FFFFFF;
-			font-size: 14px;
-		}
-		.title {
-			padding: 0px 0px;
-		}
-	}
-	&.white.header {
-		color: #FFFFFF;
-	}
+  &.fixed.top.menu {
+    background-color: #07BEB8;
+    .item {
+      color: #FFFFFF;
+    }
+    .ui.popup {
+      .item {
+        color: #000000;
+      }
+    }
+    #toggle {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .menu.right {
+        display: none;
+      }
+      #toggle {
+        display: block;
+      }
+    }
+  }
+  &.sidebar.vertical.menu {
+    padding-top: 70px;
+    .item, .title {
+      color: #FFFFFF;
+      font-size: 14px;
+    }
+    .title {
+      padding: 0px 0px;
+    }
+  }
+  &.white.header {
+    color: #FFFFFF;
+  }
 }
 .section {
-	padding: 30px 10px;
-	&.one {
+  padding: 30px 10px;
+  &.one {
     height: 100vh;
     display: flex;
     align-items: center;
@@ -60,51 +60,51 @@ flex-direction: column;
     &.havelist {
       height: 200px;
     }
-		.grid {
-			//background-color: rgba(255, 255, 255, 0.8);
-			padding: 20px;
-			.header {
-				&.title {
-					font-size: 50px;
-				}
-				&.sub {
-					font-size: 15px;
-					.upper {
-						margin-top: 40px;
-						font-weight: bold;
-						font-size: 17px;
-						text-transform: uppercase;
-					}
-				}
-			}
-		}
-	}
-	&.two {
-		background-color: #FFFFFF;
-		min-height: 450px;
-		.grid:not(.animated) {
-			visibility: hidden;
-		}
-	}
-	&.three {
-		background-color: #FFFFFF;
-		min-height: 450px;
-	}
-	&.newlist {
-		background-color: #a08d67;
-	}
-	&.listitems {
-		background-color: #FFFFFF;
+    .grid {
+      //background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      .header {
+        &.title {
+          font-size: 50px;
+        }
+        &.sub {
+          font-size: 15px;
+          .upper {
+            margin-top: 40px;
+            font-weight: bold;
+            font-size: 17px;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+  &.two {
+    background-color: #FFFFFF;
+    min-height: 450px;
+    .grid:not(.animated) {
+      visibility: hidden;
+    }
+  }
+  &.three {
+    background-color: #FFFFFF;
+    min-height: 450px;
+  }
+  &.newlist {
+    background-color: #a08d67;
+  }
+  &.listitems {
+    background-color: #FFFFFF;
     padding-bottom: 60px;
-	}
+  }
   &.copylink {
     padding-bottom: 0px;
     margin: 0px;
   }
-	&.six {
-		background-color: #07BEB8;
-		min-height: 450px;
-	}
+  &.six {
+    background-color: #07BEB8;
+    min-height: 450px;
+  }
 }
 
 #footer {
@@ -116,12 +116,12 @@ flex-direction: column;
 
 .additem {
   @media only screen and (min-width: 720px) {
-      width: 450px !important;
-      margin-right: 25px;
+    width: 450px !important;
+    margin-right: 25px;
   }
   @media only screen and (max-width: 720px) {
-      width: 100%;
-      margin-bottom: 12px;
+    width: 100%;
+    margin-bottom: 12px;
   }
 }
 
@@ -134,7 +134,7 @@ flex-direction: column;
   color: rgba(0,0,0,0.8);
 }
 .ui.secondary.button.itemadd {
-    background-color: #a08d67;
+  background-color: #a08d67;
 }
 
 .pusher {
@@ -185,6 +185,11 @@ flex-direction: column;
 }
 
 .ui.form {
+  
+  .field {
+    margin: 0 0 1.5em;
+  }
+
   .field label.modalinvert {
     color: #fff;
     font-size: 1em;
@@ -192,16 +197,24 @@ flex-direction: column;
     margin-bottom: 0.95714rem;
   }
 
-  .field .ui.transparent.inverted.input input {
-    color: #fff;
-    font-size: 1em;
-    font-weight: 900;
-    border-bottom-color: #cacaca !important;
-    padding-bottom: 10px !important;
-    border-bottom-width: 1px;
+  .field .ui.transparent.inverted.input {
+    input {
+      color: #fff;
+      font-size: 1em;
+      font-weight: 900;
+      border-bottom-color: #cacaca !important;
+      padding-bottom: 10px !important;
+      border-bottom-width: 1px;
 
-    &:focus {
-      border-bottom-color: white;
+      &:focus {
+        border-bottom-color: white;
+      }
+    }
+    div {
+      background-color: transparent;
+      padding-top: 3px;
+      padding-right: 0px;
+      padding-left: 0px;
     }
   }
 }

@@ -9,7 +9,7 @@ Each element can be upvoted or downvoted. Usefull for :
 
 ## Features
 
-- Upvote or down vote an item (IP are checked to avoid)
+- Upvote or down vote an item (IP are checked to avoid cheating)
 
 [Start to make lists !](https://listme.irz.fr)
 
