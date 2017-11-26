@@ -6,6 +6,7 @@ const low = require('lowdb');
 const FileAsync = require('lowdb/adapters/FileAsync');
 const shortid = require('shortid');
 const md5 = require('md5');
+const slugme = require('slugme');
 const liststate = require('./liststate');
 
 const app = express();
@@ -253,6 +254,7 @@ app.get('/', (req, res) => {
 *
 * @apiParam {String} :listid List hash
 * @apiParam {String} name Name of the list
+* @apiParam {String} slug Change id & url of the list if he is not already taken
 *
 * @apiSuccess {Object} list Item list
 *
@@ -285,6 +287,7 @@ app.get('/', (req, res) => {
 		res.status(500);
 		return res.json({error: 'No item given'});
 	}
+
 	const path = dbpath('items', req.params.listid.toString());
 
 	if (fs.existsSync(path)) {
@@ -299,8 +302,32 @@ app.get('/', (req, res) => {
 				if (req.body.name) {
 					list.name = req.body.name;
 				}
+
 				list = liststate(list, ip);
-				db.setState(list).write().then(() => res.json(list));
+				db.setState(list).write().then(() => {
+					if (req.body.slug && req.body.slug !== list.id) {
+						low(adapter).then(db => {
+							const list = db.getState();
+							list.id = slugme(req.body.slug);
+							const newPath = dbpath('items', list.id);
+
+							if (fs.existsSync(newPath)) {
+								res.status(500);
+								return res.json({error: 'This URL are already taken, try another.'});
+							}
+							const newAdapter = new FileAsync(newPath);
+							low(newAdapter).then(db => {
+								db.setState(list).write().then(() => {
+									fs.unlink(path, () => {
+										return res.json(list);
+									});
+								});
+							});
+						});
+					} else {
+						return res.json(list);
+					}
+				});
 			} else {
 				res.status(500);
 				return res.json({error: 'You are not the owner of the list.'});
