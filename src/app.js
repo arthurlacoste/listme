@@ -110,12 +110,12 @@ app.get('/', (req, res) => {
 })
 
 /**
-* @api {post} /add/:listid Add an item to a list
+* @api {post} /add/:listid Add an item
 * @apiExample {curl} Example usage:
 *     curl -d "item=NewItem" -X POST  https://listmeapi.irz.fr/add/ryVlDRZxM
 *
 * @apiName Add item
-* @apiGroup List
+* @apiGroup Item
 *
 * @apiParam {String} :listid List hash
 * @apiParam {String} item item to add into the list
