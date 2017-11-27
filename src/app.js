@@ -43,9 +43,9 @@ app.get('/', (req, res) => {
 })
 
 /**
-* @api {post} /add_newlist Add a new list
+* @api {post} /add/newlist Add a new list
 * @apiExample {curl} Example usage:
-*     curl -d "item=NewItem" -X POST  https://listmeapi.irz.fr/add_newlist
+*     curl -d "item=NewItem" -X POST  https://listmeapi.irz.fr/add/newlist
 *
 * @apiName Add new list
 * @apiGroup List
@@ -78,7 +78,7 @@ app.get('/', (req, res) => {
 *
 */
 
-.post('/add_newlist', (req, res) => {
+.post('/add/newlist', (req, res) => {
 	if (!req.body.item) {
 		res.status(500);
 		return res.json({error: 'No item given'});
@@ -107,6 +107,70 @@ app.get('/', (req, res) => {
 		db.defaults(list).write();
 		res.json(list);
 	});
+})
+
+/**
+* @api {post} /add/attr/:listid/:itemid Add attributes
+* @apiExample {curl} Example usage:
+*     curl -d "check=1" -X POST  https://listmeapi.irz.fr/add/attr/HkFuKaBlz/0
+*
+* @apiName Add attributes
+* @apiGroup Item
+*
+* @apiParam {String} :listid List id
+* @apiParam {String} :itemid Key of item
+* @apiParam {Number} check Vote (1 or 0)
+*
+* @apiSuccess {Object} list Item list
+*
+* @apiSuccessExample Success-Response:
+*
+* HTTP/1.1 200 OK
+* {
+*     "id": "HkFuKaBlz",
+*     "ip": "5163cfea8f004a33914db5b4509f9b57",
+*     "items": [
+*         {
+*             "label": "item",
+*             "value": 1,
+*             "check": true,
+*             "votes": {
+*                 "5163cfea8f004a33914db5b4509f9b57": 1
+*             },
+*             "key": "0",
+*             "up": false,
+*             "down": false
+*         }
+*     ],
+*     "currentip": "ec2a229c636db8e9db211573d9ac6f0d"
+* }
+*
+*/
+
+.post('/add/attr/:listid/:itemid', (req, res) => {
+	if (!req.params.listid || !req.params.itemid) {
+		res.status(500);
+		return res.json({error: 'No list id or item id given.'});
+	}
+	const path = dbpath('items', req.params.listid.toString());
+
+	if (fs.existsSync(path)) {
+		const itemid = req.params.itemid;
+		const adapter = new FileAsync(path);
+		const ip = res.locals.ip;
+
+		low(adapter).then(db => {
+			let list = db.getState();
+			if (req.body.check) {
+				list.items[itemid].check = (req.body.check === '1');
+			}
+			list = liststate(list, ip);
+			db.setState(list).write().then(() => res.json(list));
+		});
+	} else {
+		res.status(500);
+		return res.json({error: 'This list doesn\'t exist.'});
+	}
 })
 
 /**

@@ -15,9 +15,9 @@
     </div>
     <div class="content listitems">
       <div class="inline field">
-        <div class="ui checkbox itemcheck">
-          <input type="checkbox" id="item-{{ i }}" data-id="{{ i }}" tabindex="0" class="hidden">
-          <label class="{% if item.value < 0 %}hole{% endif %}"> {{ item.label }}</label>
+        <div class="ui checkbox itemcheck{% if item.check %} checked{% endif %}">
+          <input type="checkbox" id="item-{{ i }}" data-id="{{ i }}" tabindex="0" class="hidden" {% if item.check %} checked{% endif %}>
+          <label class="{% if item.check or item.value < 0 %}hole{% endif %}"> {{ item.label }}</label>
         </div>
       </div>
     </div>

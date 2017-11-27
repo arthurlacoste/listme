@@ -8,6 +8,7 @@ if(window.location.host==='listme.irz.fr') {
 $(document).ready(function() {
   new Clipboard('.btn');
 
+  // Set settings modal
   $(function(){
     $("#settings").click(function(){
       $(".ui.basic.modal").modal('show');
@@ -21,12 +22,13 @@ $(document).ready(function() {
 
   });
 
+  // Copy/paste button
   $('#copybtn').popup({
     on : 'click'
   });
 
-  //
-  $('#add_newlist').attr('action', apiurl + 'add_newlist');
+  // Add correct url to new list form
+  $('#add_newlist').attr('action', apiurl + 'add/newlist');
 
   // Set Liquid engine
   var engine = window.Liquid();
@@ -36,6 +38,7 @@ $(document).ready(function() {
     on: 'hover'
   });
 
+  // For cards
   $('.ui.fluid.card.full')
   .dimmer({
     on: 'hover'
@@ -46,13 +49,13 @@ $(document).ready(function() {
   var hash = window.location.hash.substr(1);
   if(hash) {
     console.log(hash);
-    getList(hash, 'get/' + hash);
+    getList('get/' + hash, 'GET');
   }
 
   function locationHashChanged() {
     console.log('hash change detected')
     hash = window.location.hash.substr(1);
-    getList(hash, 'get/' + hash);
+    getList('get/' + hash, 'GET');
   }
 
   window.addEventListener("hashchange", locationHashChanged, false);
@@ -60,7 +63,7 @@ $(document).ready(function() {
   $('#listitems').on('click', '.vote', function () {
     var call = $(this).attr('data-call');
     console.log(call)
-    getList(hash, call, true);
+    getList(call, 'get', '', true);
 
   });
 
@@ -77,16 +80,21 @@ $(document).ready(function() {
       url: 'static/views/' + view ,
       cache: false, // To force regenerate tampon in dev env
       success: function(data) {
-        console.log('success')
+        console.log('success');
         engine.parseAndRender(data, args).then(function(html) {
 
           $('#listitems').html(html);
           $('.ui.checkbox').checkbox({
             onChecked: function() {
               console.log($(this).data("id") );
+              var url = 'add/attr/' + hash + '/' + $(this).data("id");
+              getList (url, 'POST', 'check=1', true);
             },
             onUnchecked: function() {
+
               console.log($(this).data("id") );
+              var url = 'add/attr/' + hash + '/' + $(this).data("id");
+              getList (url, 'POST', 'check=0', true);
             },
           });
         });
@@ -101,13 +109,22 @@ $(document).ready(function() {
     return '';
   }
 
+
+  /**
+  * Set Dynamic elements to the page
+  * @param {Object} data Data get from API
+  */
+
   function existingList(data) {
+
+    // Set name of list
     if(data.name) {
       $('#listname').html('<h1>' + data.name + '</h1>');
     } else {
       $('#listname').html('');
     }
 
+    // Display Settings if current IP is the owner
     if(data.ip===data.currentip) {
       $('#settings').removeClass('remove');
     }
@@ -124,14 +141,24 @@ $(document).ready(function() {
 
   /**
   *  Get the list of all items and push it to #listitems
-  * @param {number} id Identifiant of the list wanted
+  * @param {String} path Part of URL to call API
+  * @param {String} method POST/GET
+  * @param {String} data Serialized data
+  * @param {boolean} alreadyExist If list already exist
   */
 
-  function getList (id, path, alreadyExist) {
-    alreadyExist = alreadyExist | false;
+  function getList (path, method, args, alreadyExist) {
+  console.log('args',args);
+    alreadyExist = alreadyExist || false;
+    if (typeof(args) === "boolean") {
+      alreadyExist = args;
+    }
+    args = args || '';
 
     $.ajax({
       url: apiurl + path,
+      type: method,
+      data: args,
       success: function(data) {
         // Render
         liquidRender('item.html', data);
@@ -158,7 +185,7 @@ $(document).ready(function() {
     $('#add_newlist, #settings_form').submit(function () {
       //e.preventDefault();
       var form = this;
-      console.log($(this).attr('id'));
+      console.log($(this).serialize());
       $(this).find('.submitbtn').addClass('loading');
       $(this).find('.js-notice').hide();
 

@@ -28,6 +28,11 @@ const listState = function (list, haship) {
 		return a.value - b.value;
 	});
 
+  // Sort items checked
+	list.items.sort((a, b) => {
+		return b.check - a.check;
+	});
+
 	return list;
 };
 
