@@ -1,21 +1,12 @@
-const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const ddg = require('ddg');
-const low = require('lowdb');
-const FileAsync = require('lowdb/adapters/FileAsync');
-const shortid = require('shortid');
 const md5 = require('md5');
-const slugme = require('slugme');
-const liststate = require('./liststate');
+const api = require('./apicore')
 
 const app = express();
 const port = process.env.PORT || 1337;
-const striptag = /(<([^>]+)>)/ig;
 
-const dbpath = function (type, id) {
-	return `${__dirname}/../db/${type}/${id}.db.json`;
-};
 
 app.set('trust proxy', '9.9.9.9');
 
@@ -39,13 +30,13 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-	res.json({message: 'Nothing here ! try /help'});
+	res.json({message: 'Nothing here !'});
 })
 
 /**
 * @api {post} /add/newlist Add a new list
 * @apiExample {curl} Example usage:
-*     curl -d "item=NewItem" -X POST  https://listmeapi.irz.fr/add/newlist
+*     curl -d "item=NewItem" -X POST  https://localhost:1337/add/newlist
 *
 * @apiName Add new list
 * @apiGroup List
@@ -79,34 +70,13 @@ app.get('/', (req, res) => {
 */
 
 .post('/add/newlist', (req, res) => {
-	if (!req.body.item) {
-		res.status(500);
-		return res.json({error: 'No item given'});
-	}
-
-	const id = shortid.generate();
-	const adapter = new FileAsync(dbpath('items', id));
-
-	const ip = res.locals.ip;
-
-	let list = {
-		id,
-		ip,
-		items: [{
-			label: req.body.item.replace(striptag, ''),
-			value: 1,
-			check: false,
-			votes: {
-				[ip]: 1
-			}
-		}]
-	};
-	list = liststate(list, ip);
-
-	low(adapter).then(db => {
-		db.defaults(list).write();
-		res.json(list);
-	});
+  api.addNewList(req, res, (err, list) => {
+    if(err) {
+      res.status(500);
+      return res.json({error: err});
+    }
+    return res.json(list);
+  })
 })
 
 /**
@@ -148,29 +118,13 @@ app.get('/', (req, res) => {
 */
 
 .post('/add/attr/:listid/:itemid', (req, res) => {
-	if (!req.params.listid || !req.params.itemid) {
-		res.status(500);
-		return res.json({error: 'No list id or item id given.'});
-	}
-	const path = dbpath('items', req.params.listid.toString());
-
-	if (fs.existsSync(path)) {
-		const itemid = req.params.itemid;
-		const adapter = new FileAsync(path);
-		const ip = res.locals.ip;
-
-		low(adapter).then(db => {
-			let list = db.getState();
-			if (req.body.check) {
-				list.items[itemid].check = (req.body.check === '1');
-			}
-			list = liststate(list, ip);
-			db.setState(list).write().then(() => res.json(list));
-		});
-	} else {
-		res.status(500);
-		return res.json({error: 'This list doesn\'t exist.'});
-	}
+  api.addAttributes(req, res, (err, list) => {
+    if(err) {
+      res.status(500);
+      return res.json({error: err});
+    }
+    return res.json(list);
+  })
 })
 
 /**
@@ -211,37 +165,13 @@ app.get('/', (req, res) => {
 */
 
 .post('/add/:listid', (req, res) => {
-	if (!req.params.listid || !req.body.item) {
-		res.status(500);
-		return res.json({error: 'No item given'});
-	}
-	const path = dbpath('items', req.params.listid);
-
-	if (fs.existsSync(path)) {
-    // Do something
-
-		const adapter = new FileAsync(path);
-		const ip = res.locals.ip;
-
-		const item = {
-			label: req.body.item.replace(striptag, ''),
-			value: 1,
-			check: false,
-			votes: {
-				[ip]: 1
-			}
-		};
-
-		low(adapter).then(db => {
-			let list = db.getState();
-			list.items.push(item);
-			list = liststate(list, ip);
-			db.setState(list).write().then(() => res.json(list));
-		});
-	} else {
-		res.status(500);
-		return res.json({error: 'This list doesn\'t exist.'});
-	}
+  api.addItem(req, res, (err, list) => {
+    if(err) {
+      res.status(500);
+      return res.json({error: err});
+    }
+    return res.json(list);
+  })
 })
 
 /**
@@ -283,28 +213,13 @@ app.get('/', (req, res) => {
 */
 
 .get('/vote/:listid/:itemid/:vote', (req, res) => {
-	if (!req.params.listid || !req.params.vote) {
-		res.status(500);
-		return res.json({error: 'No item given'});
-	}
-	const path = dbpath('items', req.params.listid.toString());
-
-	if (fs.existsSync(path)) {
-		const itemid = req.params.itemid;
-		const adapter = new FileAsync(path);
-		const ip = res.locals.ip;
-		const vote = (req.params.vote === '1') ? 1 : -1;
-
-		low(adapter).then(db => {
-			let list = db.getState();
-			list.items[itemid].votes[ip] = vote;
-			list = liststate(list, ip);
-			db.setState(list).write().then(() => res.json(list));
-		});
-	} else {
-		res.status(500);
-		return res.json({error: 'This list doesn\'t exist.'});
-	}
+  api.vote(req, res, (err, list) => {
+    if(err) {
+      res.status(500);
+      return res.json({error: err});
+    }
+    return res.json(list);
+  })
 })
 
 /**
@@ -347,60 +262,13 @@ app.get('/', (req, res) => {
 */
 
 .post('/settings/:listid', (req, res) => {
-	if (!req.params.listid) {
-		res.status(500);
-		return res.json({error: 'No item given'});
-	}
-
-	const path = dbpath('items', req.params.listid.toString());
-
-	if (fs.existsSync(path)) {
-		const adapter = new FileAsync(path);
-		const ip = res.locals.ip;
-
-		low(adapter).then(db => {
-			let list = db.getState();
-
-      // If it's owner, he can edit settings
-			if (ip === list.ip) {
-				if (req.body.name) {
-					list.name = req.body.name;
-				}
-
-				list = liststate(list, ip);
-				db.setState(list).write().then(() => {
-					if (req.body.slug && req.body.slug !== list.id) {
-						low(adapter).then(db => {
-							const list = db.getState();
-							list.id = slugme(req.body.slug);
-							const newPath = dbpath('items', list.id);
-
-							if (fs.existsSync(newPath)) {
-								res.status(500);
-								return res.json({error: 'This URL are already taken, try another.'});
-							}
-							const newAdapter = new FileAsync(newPath);
-							low(newAdapter).then(db => {
-								db.setState(list).write().then(() => {
-									fs.unlink(path, () => {
-										return res.json(list);
-									});
-								});
-							});
-						});
-					} else {
-						return res.json(list);
-					}
-				});
-			} else {
-				res.status(500);
-				return res.json({error: 'You are not the owner of the list.'});
-			}
-		});
-	} else {
-		res.status(500);
-		return res.json({error: 'This list doesn\'t exist.'});
-	}
+  api.setSettings(req, res, (err, list) => {
+    if(err) {
+      res.status(500);
+      return res.json({error: err});
+    }
+    return res.json(list);
+  })
 })
 
 /**
@@ -440,45 +308,17 @@ app.get('/', (req, res) => {
 */
 
 .get('/get/:listid', (req, res) => {
-	if (!req.params.listid) {
-		res.status(500);
-		return res.json({error: 'No item given'});
-	}
-	const path = dbpath('items', req.params.listid.toString());
-
-	if (fs.existsSync(path)) {
-		const adapter = new FileAsync(path);
-		const ip = res.locals.ip;
-
-		low(adapter).then(db => {
-			let list = db.getState();
-			list = liststate(list, ip);
-			res.json(list);
-		});
-	} else {
-		res.status(404);
-		return res.json({error: 'This list doesn\'t exist.'});
-	}
+  api.getList(req, res, (err, list) => {
+    if(err) {
+      res.status(500);
+      return res.json({error: err});
+    }
+    return res.json(list);
+  })
 })
 
-// Get all results from duckduckgo
-
 .get('/ddg/:item', (req, res) => {
-	const item = req.params.item.toString();
 
-	const options = {
-		useragent: 'listJS',
-		no_redirects: '1', // eslint-disable-line camelcase
-		format: 'json'
-	};
-
-	ddg.query(item, options, (err, data) => {
-		if (err) {
-			res.status(500);
-			return res.json({error: err});
-		}
-		res.json(data);
-	});
 })
 
 .listen(port, () => {

@@ -13,7 +13,8 @@
     "lowdb": "^1.0.0",
     "md5": "^2.2.1",
     "shortid": "^2.2.8",
-    "slugme": "^1.1.1"
+    "slugme": "^1.1.1",
+    "to-markdown": "^3.1.0"
   },
   "scripts": {
     "start": "pm2 start src/app.js",
@@ -24,6 +25,7 @@
   "author": "Arthur Lacoste <arthak@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "ava": "^0.24.0",
     "babel-cli": "^6.26.0"
   }
 }
