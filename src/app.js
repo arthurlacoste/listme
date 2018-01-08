@@ -1,12 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const ddg = require('ddg');
 const md5 = require('md5');
-const api = require('./apicore')
+const api = require('./apicore');
 
 const app = express();
 const port = process.env.PORT || 1337;
-
 
 app.set('trust proxy', '9.9.9.9');
 
@@ -70,13 +68,13 @@ app.get('/', (req, res) => {
 */
 
 .post('/add/newlist', (req, res) => {
-  api.addNewList(req, res, (err, list) => {
-    if(err) {
-      res.status(500);
-      return res.json({error: err});
-    }
-    return res.json(list);
-  })
+	api.addNewList(req, res, (err, list) => {
+		if (err) {
+			res.status(500);
+			return res.json({error: err});
+		}
+		return res.json(list);
+	});
 })
 
 /**
@@ -118,13 +116,13 @@ app.get('/', (req, res) => {
 */
 
 .post('/add/attr/:listid/:itemid', (req, res) => {
-  api.addAttributes(req, res, (err, list) => {
-    if(err) {
-      res.status(500);
-      return res.json({error: err});
-    }
-    return res.json(list);
-  })
+	api.addAttributes(req, res, (err, list) => {
+		if (err) {
+			res.status(500);
+			return res.json({error: err});
+		}
+		return res.json(list);
+	});
 })
 
 /**
@@ -165,13 +163,13 @@ app.get('/', (req, res) => {
 */
 
 .post('/add/:listid', (req, res) => {
-  api.addItem(req, res, (err, list) => {
-    if(err) {
-      res.status(500);
-      return res.json({error: err});
-    }
-    return res.json(list);
-  })
+	api.addItem(req, res, (err, list) => {
+		if (err) {
+			res.status(500);
+			return res.json({error: err});
+		}
+		return res.json(list);
+	});
 })
 
 /**
@@ -213,13 +211,13 @@ app.get('/', (req, res) => {
 */
 
 .get('/vote/:listid/:itemid/:vote', (req, res) => {
-  api.vote(req, res, (err, list) => {
-    if(err) {
-      res.status(500);
-      return res.json({error: err});
-    }
-    return res.json(list);
-  })
+	api.vote(req, res, (err, list) => {
+		if (err) {
+			res.status(500);
+			return res.json({error: err});
+		}
+		return res.json(list);
+	});
 })
 
 /**
@@ -262,13 +260,13 @@ app.get('/', (req, res) => {
 */
 
 .post('/settings/:listid', (req, res) => {
-  api.setSettings(req, res, (err, list) => {
-    if(err) {
-      res.status(500);
-      return res.json({error: err});
-    }
-    return res.json(list);
-  })
+	api.setSettings(req, res, (err, list) => {
+		if (err) {
+			res.status(500);
+			return res.json({error: err});
+		}
+		return res.json(list);
+	});
 })
 
 /**
@@ -308,17 +306,23 @@ app.get('/', (req, res) => {
 */
 
 .get('/get/:listid', (req, res) => {
-  api.getList(req, res, (err, list) => {
-    if(err) {
-      res.status(500);
-      return res.json({error: err});
-    }
-    return res.json(list);
-  })
+	api.getList(req, res, (err, list) => {
+		if (err) {
+			res.status(500);
+			return res.json({error: err});
+		}
+		return res.json(list);
+	});
 })
 
 .get('/ddg/:item', (req, res) => {
-
+	api.ddgSearch(req, res, (err, list) => {
+		if (err) {
+			res.status(500);
+			return res.json({error: err});
+		}
+		return res.json(list);
+	});
 })
 
 .listen(port, () => {
