@@ -1,6 +1,7 @@
 const test = require('ava');
 const md5 = require('md5');
 const api = require('../src/apicore.js');
+const {to} = require('await-to-js');
 
 const ip = 'u';
 
@@ -23,90 +24,67 @@ const res = {
   }
 };
 
-test.cb('Add new item on new list.', t => {
-	api.addNewList(req, res, (err, list) => {
-		if (err) {
-      t.fail();
-			return t.end();
-		}
-		t.pass();
-    return t.end();
-	});
-});
+test('Add new item on new list.', async t => {
+  let err, list;
+  [err, list] = await to(api.addNewList(req, res));
 
-test.cb('Add attributes', t => {
-	api.addAttributes(req, res, (err, list) => {
-		if (err) {
-      t.fail();
-			return t.end();
-		}
-		t.pass();
-    return t.end();
-	});
-});
-
-test.cb('Add item to an existing list', t => {
-	api.addItem(req, res, (err, list) => {
-		if (err) {
-      t.fail();
-			return t.end();
-		}
-		t.pass();
-    return t.end();
-	});
-});
-
-test.cb('Vote for an item', t => {
-	api.addItem(req, res, (err, list) => {
-		if (err) {
-      t.fail();
-			return t.end();
-		}
-		t.pass();
-    return t.end();
-	});
-});
-
-test.cb('Set settings', t => {
-	api.setSettings(req, res, (err, list) => {
-		if (err) {
-      t.is('You are not the owner of the list.', err);
-			return t.end();
-		}
-		t.fail();
-    return t.end();
-	});
-});
-
-test.cb('Set settings, but not the owner', t => {
-  const resAlt = res;
-  res.locals.ip = "none";
-	api.setSettings(req, resAlt, (err, list) => {
-		if (err) {
-      t.is('You are not the owner of the list.', err);
-			return t.end();
-		}
-		t.fail();
-    return t.end();
-	});
-});
-
-
-test.cb('Get List', t => {
-	api.getList(req, res, (err, list) => {
-		if (err) {
-      t.fail();
-			return t.end();
-		}
-		t.pass();
-    return t.end();
-	});
-});
-
-
-api.setSettings(req, res, (err, list) => {
   if (err) {
-    console.log(err);
+      return t.fail();
   }
-  console.log(list);
+  return t.pass();
+});
+
+test('Add attributes', async t => {
+  let err, list;
+  [err, list] = await to(api.addAttributes(req, res));
+
+  if (err) {
+      return t.fail();
+  }
+  return t.pass();
+});
+
+test('Add item to an existing list', async t => {
+  let err, list;
+  [err, list] = await to(api.addItem(req, res));
+
+  if (err) {
+      return t.fail();
+  }
+  return t.pass();
+});
+
+test('Vote for an item', async t => {
+  let err, list;
+  [err, list] = await to(api.vote(req, res));
+
+  if (err) {
+      return t.fail();
+  }
+  return t.pass();
+});
+
+test('Set settings, but not the owner', async t => {
+  const resAlt = res;
+  res.locals.ip = 'none';
+
+  let err, list;
+
+	[err, list] = await to(api.setSettings(req, resAlt));
+
+	if (err) {
+      return t.pass();
+	}
+	return t.fail();
+});
+
+test('Get List', async t => {
+  let err, list;
+
+	[err, list] = await to(api.getList(req, res));
+
+	if (err) {
+      return t.fail();
+	}
+	return t.pass();
 });

@@ -25,14 +25,13 @@ const dbpath = (type, id) => {
 	return `${__dirname}/../db/${type}/${id}.db.json`;
 };
 
-const addNewList = async (req, res, callback) => {
+const addNewList = async (req, res) => {
 	if (!req.body.item) {
-		return callback('No item given');
+		return Promise.reject('No item given');
 	}
 
 	const id = shortid.generate();
 	const adapter = new FileAsync(dbpath('items', id));
-
 	const ip = res.locals.ip;
 
 	let list = {
@@ -50,13 +49,13 @@ const addNewList = async (req, res, callback) => {
 	list = liststate(list, ip);
 
 	const db = await low(adapter);
-	db.defaults(list).write();
-	callback(null, list);
+	await db.defaults(list).write();
+	return list;
 };
 
-const addAttributes = async (req, res, callback) => {
+const addAttributes = async (req, res) => {
 	if (!req.params.listid || !req.params.itemid) {
-		return callback('No list id or item id given.');
+		return Promise.reject('No list id or item id given.');
 	}
 	const path = dbpath('items', req.params.listid.toString());
 	const thisFileExist = await fileExist(path);
@@ -72,15 +71,17 @@ const addAttributes = async (req, res, callback) => {
 			list.items[itemid].check = (req.body.check === '1');
 		}
 		list = liststate(list, ip);
-		db.setState(list).write().then(() => callback(null, list));
+		await db.setState(list).write();
+		return list;
+
 	} else {
-		return callback('This list doesn\'t exist.');
+		return Promise.reject('This list doesn\'t exist.');
 	}
 };
 
-const addItem = async (req, res, callback) => {
+const addItem = async (req, res) => {
 	if (!req.params.listid || !req.body.item) {
-		return callback('No item given');
+		return Promise.reject('No item given');
 	}
 	const path = dbpath('items', req.params.listid);
 	const thisFileExist = await fileExist(path);
@@ -102,15 +103,17 @@ const addItem = async (req, res, callback) => {
 		let list = db.getState();
 		list.items.push(item);
 		list = liststate(list, ip);
-		db.setState(list).write().then(() => callback(null, list));
+		await db.setState(list).write();
+		return list;
+
 	} else {
-		return callback('This list doesn\'t exist.');
+		return Promise.reject('This list doesn\'t exist.');
 	}
 };
 
-const vote = async (req, res, callback) => {
+const vote = async (req, res) => {
 	if (!req.params.listid || !req.params.vote) {
-		return callback('No item given');
+		return Promise.reject('No item given');
 	}
 	const path = dbpath('items', req.params.listid.toString());
 	const thisFileExist = await fileExist(path);
@@ -120,19 +123,21 @@ const vote = async (req, res, callback) => {
 		const adapter = new FileAsync(path);
 		const ip = res.locals.ip;
 		const vote = (req.params.vote === '1') ? 1 : -1;
-
 		const db = await low(adapter);
+
 		let list = db.getState();
 		list.items[itemid].votes[ip] = vote;
 		list = liststate(list, ip);
-		db.setState(list).write().then(() => callback(null, list));
+		await db.setState(list).write();
+		return list;
+
 	} else {
-		return callback('This list doesn\'t exist.');
+		return Promise.reject('This list doesn\'t exist.');
 	}
 };
 
 // Set custom slug if is not already exists
-const setSlug = async (req, res, path, callback) => {
+const setSlug = async (req, res, path) => {
 	const adapter = new FileAsync(path);
 	const ndb = await low(adapter);
 	const list = ndb.getState();
@@ -142,7 +147,7 @@ const setSlug = async (req, res, path, callback) => {
 	const urlTaken = await fileExist(newPath);
 
 	if (urlTaken) {
-		return callback('This URL are already taken, try another.');
+		return Promise.reject('This URL are already taken, try another.');
 	}
 
 	const newAdapter = new FileAsync(newPath);
@@ -150,12 +155,12 @@ const setSlug = async (req, res, path, callback) => {
 	await ldb.setState(list).write();
 
 	await fs.unlink(path);
-	return callback(null, list);
+	return list;
 };
 
-const setSettings = async (req, res, callback) => {
+const setSettings = async (req, res) => {
 	if (!req.params.listid) {
-		return callback('No item given');
+		return Promise.reject('No item given');
 	}
 
 	const path = dbpath('items', req.params.listid.toString());
@@ -177,21 +182,21 @@ const setSettings = async (req, res, callback) => {
 			await db.setState(list).write();
 
 			if (req.body.slug && req.body.slug !== list.id) {
-				setSlug(req, res, path, callback);
+				return setSlug(req, res, path);
 			} else {
-				return callback(null, list);
+				return list;
 			}
 		} else {
-			return callback('You are not the owner of the list.');
+			return Promise.reject('You are not the owner of the list.');
 		}
 	} else {
-		return callback('This list doesn\'t exist.');
+		return Promise.reject('This list doesn\'t exist.');
 	}
 };
 
-const getList = async (req, res, callback) => {
+const getList = async (req, res) => {
 	if (!req.params.listid) {
-		return callback('No item given');
+		return Promise.reject('No item given');
 	}
 	const path = dbpath('items', req.params.listid.toString());
 	const fileofThisList = await fileExist(path);
@@ -203,9 +208,9 @@ const getList = async (req, res, callback) => {
 		const db = await low(adapter);
 		let list = db.getState();
 		list = liststate(list, ip);
-		callback(null, list);
+		return(list);
 	} else {
-		return callback('This list doesn\'t exist.');
+		return Promise.reject('This list doesn\'t exist.');
 	}
 };
 

@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const md5 = require('md5');
 const api = require('./apicore');
+const {to} = require('await-to-js');
 
 const app = express();
 const port = process.env.PORT || 1337;
@@ -67,14 +68,15 @@ app.get('/', (req, res) => {
 *
 */
 
-.post('/add/newlist', (req, res) => {
-	api.addNewList(req, res, (err, list) => {
-		if (err) {
-			res.status(500);
-			return res.json({error: err});
-		}
-		return res.json(list);
-	});
+.post('/add/newlist', async (req, res) => {
+	let err, list;
+	[err, list] = await to(api.addNewList(req, res));
+
+	if (err) {
+		res.status(500);
+		return res.json({error: err});
+	}
+	return res.json(list);
 })
 
 /**
@@ -115,14 +117,15 @@ app.get('/', (req, res) => {
 *
 */
 
-.post('/add/attr/:listid/:itemid', (req, res) => {
-	api.addAttributes(req, res, (err, list) => {
-		if (err) {
-			res.status(500);
-			return res.json({error: err});
-		}
-		return res.json(list);
-	});
+.post('/add/attr/:listid/:itemid', async (req, res) => {
+	let err, list;
+	[err, list] = await to(api.addItem(req, res));
+
+	if (err) {
+		res.status(500);
+		return res.json({error: err});
+	}
+	return res.json(list);
 })
 
 /**
@@ -162,14 +165,15 @@ app.get('/', (req, res) => {
 *
 */
 
-.post('/add/:listid', (req, res) => {
-	api.addItem(req, res, (err, list) => {
-		if (err) {
-			res.status(500);
-			return res.json({error: err});
-		}
-		return res.json(list);
-	});
+.post('/add/:listid', async (req, res) => {
+	let err, list;
+	[err, list] = await to(api.addItem(req, res));
+
+	if (err) {
+		res.status(500);
+		return res.json({error: err});
+	}
+	return res.json(list);
 })
 
 /**
@@ -210,14 +214,15 @@ app.get('/', (req, res) => {
 *
 */
 
-.get('/vote/:listid/:itemid/:vote', (req, res) => {
-	api.vote(req, res, (err, list) => {
-		if (err) {
-			res.status(500);
-			return res.json({error: err});
-		}
-		return res.json(list);
-	});
+.get('/vote/:listid/:itemid/:vote', async (req, res) => {
+	let err, list;
+	[err, list] = await to(api.vote(req, res));
+
+	if (err) {
+		res.status(500);
+		return res.json({error: err});
+	}
+	return res.json(list);
 })
 
 /**
@@ -259,14 +264,16 @@ app.get('/', (req, res) => {
 *
 */
 
-.post('/settings/:listid', (req, res) => {
-	api.setSettings(req, res, (err, list) => {
-		if (err) {
-			res.status(500);
-			return res.json({error: err});
-		}
-		return res.json(list);
-	});
+.post('/settings/:listid', async (req, res) => {
+	let err, list;
+
+	[err, list] = await to(api.setSettings(req, res));
+
+	if (err) {
+		res.status(500);
+		return res.json({error: err});
+	}
+	return res.json(list);
 })
 
 /**
@@ -305,14 +312,16 @@ app.get('/', (req, res) => {
 *
 */
 
-.get('/get/:listid', (req, res) => {
-	api.getList(req, res, (err, list) => {
-		if (err) {
-			res.status(500);
-			return res.json({error: err});
-		}
-		return res.json(list);
-	});
+.get('/get/:listid', async (req, res) => {
+	let err, list;
+
+	[err, list] = await to(api.getList(req, res));
+
+	if (err) {
+		res.status(500);
+		return res.json({error: err});
+	}
+	return res.json(list);
 })
 
 .get('/ddg/:item', (req, res) => {
