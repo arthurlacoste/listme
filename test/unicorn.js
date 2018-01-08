@@ -2,6 +2,8 @@ const test = require('ava');
 const md5 = require('md5');
 const api = require('../src/apicore.js');
 
+const ip = 'u';
+
 const req = {
   body: {
     item: 'item',
@@ -17,7 +19,7 @@ const req = {
 
 const res = {
   locals: {
-    ip: md5(ip + 'JE5G%$>b|2kV:1!(U&O')
+    ip: "haship",
   }
 };
 
@@ -75,6 +77,20 @@ test.cb('Set settings', t => {
     return t.end();
 	});
 });
+
+test.cb('Set settings, but not the owner', t => {
+  const resAlt = res;
+  res.locals.ip = "none";
+	api.setSettings(req, resAlt, (err, list) => {
+		if (err) {
+      t.is('You are not the owner of the list.', err);
+			return t.end();
+		}
+		t.fail();
+    return t.end();
+	});
+});
+
 
 test.cb('Get List', t => {
 	api.getList(req, res, (err, list) => {
