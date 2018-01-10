@@ -119,7 +119,7 @@ app.get('/', (req, res) => {
 
 .post('/add/attr/:listid/:itemid', async (req, res) => {
 	let err, list;
-	[err, list] = await to(api.addItem(req, res));
+	[err, list] = await to(api.addAttributes(req, res));
 
 	if (err) {
 		res.status(500);
