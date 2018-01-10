@@ -52,11 +52,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url(../img/background-2.jpg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  box-shadow: inset 2000px 0 0 0 rgba(245, 232, 206, 0.7);
+  background-color: #F9E2B1;
 }
 .section.one.havelist {
   height: 200px;
@@ -88,7 +87,7 @@ body {
   min-height: 450px;
 }
 .section.newlist {
-  background-color: #a08d67;
+  background-color: #8FC6A8;
 }
 .section.listitems {
   background-color: #FFFFFF;
@@ -128,7 +127,7 @@ body {
   color: rgba(0, 0, 0, 0.8);
 }
 .ui.secondary.button.itemadd {
-  background-color: #a08d67;
+  background-color: #FB8A59;
 }
 .pusher {
   flex: 1 0 auto;
