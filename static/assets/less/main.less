@@ -7,6 +7,24 @@ body {
   flex-direction: column;
 }
 .pointer {cursor: pointer;}
+
+.img-logo {
+  padding-bottom: 20px;
+  width: 150px;
+}
+
+h3.ui.header {
+  color: #FFF;
+  padding-bottom: 20px;
+  @media (min-width: 730px) {
+    font-size: 3.28571429rem;
+  }
+  @media (min-width: 1200px) {
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+}
+
 .ui {
   &.fixed.top.menu {
     background-color: #07BEB8;
@@ -18,9 +36,11 @@ body {
         color: #000000;
       }
     }
+
     #toggle {
       display: none;
     }
+
     @media (max-width: 768px) {
       .menu.right {
         display: none;
@@ -51,11 +71,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url(../img/background-2.jpg);
+    background-image: url(../img/tim-gouw-splash.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    box-shadow: inset 2000px 0 0 0 rgba(245, 232, 206, 0.7);
+    box-shadow: inset 2000px 0 0 0 #5a5a5ade;
 
     &.havelist {
       height: 200px;
@@ -91,7 +111,7 @@ body {
     min-height: 450px;
   }
   &.newlist {
-    background-color: #a08d67;
+    background-color: #464646;
   }
   &.listitems {
     background-color: #FFFFFF;
@@ -134,7 +154,7 @@ body {
   color: rgba(0,0,0,0.8);
 }
 .ui.secondary.button.itemadd {
-  background-color: #a08d67;
+  background-color: #FB8A59;
 }
 
 .pusher {

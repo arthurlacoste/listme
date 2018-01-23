@@ -10,6 +10,25 @@ body {
 .pointer {
   cursor: pointer;
 }
+.img-logo {
+  padding-bottom: 20px;
+  width: 150px;
+}
+h3.ui.header {
+  color: #FFF;
+  padding-bottom: 20px;
+}
+@media (min-width: 730px) {
+  h3.ui.header {
+    font-size: 3.28571429rem;
+  }
+}
+@media (min-width: 1200px) {
+  h3.ui.header {
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+}
 .ui.fixed.top.menu {
   background-color: #07BEB8;
 }
@@ -52,10 +71,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: url(../img/tim-gouw-splash.jpg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-color: #F9E2B1;
+  box-shadow: inset 2000px 0 0 0 #5a5a5ade;
 }
 .section.one.havelist {
   height: 200px;
@@ -87,7 +107,7 @@ body {
   min-height: 450px;
 }
 .section.newlist {
-  background-color: #8FC6A8;
+  background-color: #464646;
 }
 .section.listitems {
   background-color: #FFFFFF;

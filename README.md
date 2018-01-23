@@ -1,3 +1,7 @@
+[![NPM Version][npm-version]][npm-url]
+[![travis][travis-badge]][travis-url]
+[![xo][xo-badge]][xo-url]
+
 # listme
 
 Listme is a tool to make lists and share with your friends.
@@ -39,3 +43,12 @@ npm install lessc pm2 -g
 npm install
 npm start
 ```
+
+Photo by Tim Gouw on Unsplash
+
+[npm-version]:https://img.shields.io/npm/v/listme.svg
+[npm-url]: https://npmjs.org/package/listme
+[travis-badge]: http://img.shields.io/travis/arthurlacoste/listme.svg
+[travis-url]: https://travis-ci.org/arthurlacoste/listme
+[xo-badge]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg
+[xo-url]: https://github.com/sindresorhus/xo

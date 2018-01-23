@@ -163,10 +163,12 @@ $(document).ready(function() {
         // Render
         liquidRender('item.html', data);
 
-        // Take less height
+        // Take less height and hide text
         $('.section.one').css({
-          height: 200
+          height: 250
         });
+
+        $('.ui.header').hide();
 
         if (!alreadyExist) {
           existingList(data);
@@ -221,8 +223,9 @@ $(document).ready(function() {
 
           // Take less height
           $('.section.one').animate({
-            height: 200
-          }, 600);
+            height: 250
+          }, { duration: 600, queue: false } );
+          $('.ui.header').hide(500);
 
           hash = data.id;
         },
