@@ -13,7 +13,8 @@ const req = {
   body: {
     item: 'item',
     check: '1',
-    slug: testID
+    slug: testID,
+    name: 'Great List title'
   },
   params: {
     listid: 'sydh8xaxz',
@@ -29,12 +30,38 @@ const res = {
   }
 };
 
+test('Test if a file exist', async t => {
+  let err, list;
+  let fileExist = api.__get__('fileExist');
+  [err, list] = await to(fileExist(`${__dirname}/../db/items/sydh8xaxz.db.json`));
+
+  console.log(list);
+
+  if (list === true) {
+    return t.pass();
+  }
+  return t.fail();
+});
+
+test('Test a file does not exist', async t => {
+  let err, list;
+  let fileExist = api.__get__('fileExist');
+  [err, list] = await to(fileExist(`${__dirname}/../db/items/thisFileDoesntExist.db.json`));
+
+  console.log(list);
+
+  if (list === false) {
+    return t.pass();
+  }
+  return t.fail();
+});
+
 test('Add new item on new list.', async t => {
   let err, list;
   [err, list] = await to(api.addNewList(req, res));
 
   if (err) {
-      return t.fail();
+    return t.fail();
   }
   return t.pass();
 });
@@ -44,7 +71,7 @@ test('Add attributes', async t => {
   [err, list] = await to(api.addAttributes(req, res));
 
   if (err) {
-      return t.fail();
+    return t.fail();
   }
   return t.pass();
 });
@@ -55,7 +82,7 @@ test('Add item to an existing list', async t => {
   [err, list] = await to(addItem(req, res));
 
   if (err) {
-      return t.fail();
+    return t.fail();
   }
   return t.pass();
 });
@@ -65,63 +92,102 @@ test('Vote for an item', async t => {
   [err, list] = await to(api.vote(req, res));
 
   if (err) {
-      return t.fail();
+    return t.fail();
   }
   return t.pass();
 });
 
 
 
-test('Set settings, but not the owner', async t => {
-  const resAlt = res;
-  res.locals.ip = 'none';
+test.serial('Set settings, but not the owner', async t => {
+  let resAlt = Object.assign({}, res);
+  resAlt.locals.ip = 'none';
+
 
   let err, list;
 
-	[err, list] = await to(api.setSettings(req, resAlt));
+  [err, list] = await to(api.setSettings(req, resAlt));
 
-	if (err) {
-      return t.pass();
-	}
-	return t.fail();
+  if (err) {
+    console.log(err);
+    return t.pass();
+  }
+  return t.fail();
+});
+
+test.serial('Set settings, I am the owner', async t => {
+  let err, list;
+  let resAlt = Object.assign({}, res);
+  resAlt.locals.ip = 'haship';
+  [err, list] = await to(api.setSettings(req, resAlt));
+
+  if (err) {
+    console.log(err);
+    return t.fail();
+  }
+  const reqAlt = Object.assign({}, req);
+  reqAlt.body.slug = 'sydh8xaxz';
+  let setSlug = api.__get__('setSlug');
+
+  [err, list] = await to(setSlug(reqAlt, res, `${__dirname}/../db/items/${testID}.db.json`));
+
+  return t.pass();
 });
 
 test('Get List', async t => {
   let err, list;
 
-	[err, list] = await to(api.getList(req, res));
+  [err, list] = await to(api.getList(req, res));
 
-	if (err) {
-      return t.fail();
-	}
-	return t.pass();
+  if (err) {
+    console.log(err);
+    return t.fail();
+  }
+  return t.pass();
 });
 
-test('Set a slug', async t => {
+test.serial('Set a slug', async t => {
   let err, list;
   let setSlug = api.__get__('setSlug');
-  [err, list] = await to(setSlug(req, res, `${__dirname}/../db/items/Sydh8XAXz.db.json`));
+  const reqAlt = Object.assign({}, req);
+  reqAlt.body.slug = testID;
+
+  [err, list] = await to(setSlug(reqAlt, res, `${__dirname}/../db/items/sydh8xaxz.db.json`));
 
   if (err) {
     console.log(err)
-      return t.fail();
+    return t.fail();
   }
-  const reqAlt = req;
-  reqAlt.body.slug = 'Sydh8XAXz';
+
+  reqAlt.body.slug = 'sydh8xaxz';
   [err, list] = await to(setSlug(reqAlt, res, `${__dirname}/../db/items/${testID}.db.json`));
 
   return t.pass();
+});
 
+test.serial('Set a slug, URL already taken', async t => {
+  let err, list;
+  let setSlug = api.__get__('setSlug');
+  const reqAlt = Object.assign({}, req);
+  reqAlt.body.slug = 'sydh8xaxz';
+  [err, list] = await to(setSlug(reqAlt, res, `${__dirname}/../db/items/${testID}.db.json`));
 
+  if (err) {
+    console.log(err)
+    return t.pass();
+  }
+
+  return t.fail();
 });
 
 test('Duckduckgo search', async t => {
   let err, list;
 
-	[err, list] = await to(api.ddgSearch(req, res));
+  [err, list] = await to(api.ddgSearch(req, res));
 
-	if (err) {
-      return t.fail();
-	}
-	return t.pass();
+  if (err) {
+    console.log(err);
+    return t.fail();
+  }
+  return t.pass();
 });
