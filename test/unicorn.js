@@ -135,7 +135,7 @@ test.serial('Set settings, but not the owner', async t => {
   return t.fail();
 });
 
-test('Get List', async t => {
+test.serial('Get List', async t => {
   let err, list;
 
   [err, list] = await to(api.getList(req, res));
