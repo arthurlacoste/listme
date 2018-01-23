@@ -30,6 +30,36 @@ const res = {
   }
 };
 
+test.serial('Set settings, I am the owner', async t => {
+  let err, list;
+  let resAlt = JSON.parse(JSON.stringify(res));
+  resAlt.locals.ip = 'haship';
+  const reqAlt = JSON.parse(JSON.stringify(req));
+  reqAlt.body.slug = 'sydh8xaxz';
+
+  [err, list] = await to(api.setSettings(reqAlt, resAlt));
+
+  if (err) {
+    console.log(err);
+    return t.fail();
+  }
+  return t.pass();
+});
+
+test.serial('Set settings, but not the owner', async t => {
+  let resAlt = JSON.parse(JSON.stringify(res));
+  resAlt.locals.ip = 'none';
+  let err, list;
+
+  [err, list] = await to(api.setSettings(req, resAlt));
+
+  if (err) {
+    console.log(err);
+    return t.pass();
+  }
+  return t.fail();
+});
+
 test.serial('Test if a file exist', async t => {
   let err, list;
   let fileExist = api.__get__('fileExist');
@@ -165,35 +195,6 @@ test.serial('Set a slug, URL already taken', async t => {
   return t.fail();
 });
 
-test.serial('Set settings, I am the owner', async t => {
-  let err, list;
-  let resAlt = JSON.parse(JSON.stringify(res));
-  resAlt.locals.ip = 'haship';
-  const reqAlt = JSON.parse(JSON.stringify(req));
-  reqAlt.body.slug = 'sydh8xaxz';
-
-  [err, list] = await to(api.setSettings(reqAlt, resAlt));
-
-  if (err) {
-    console.log(err);
-    return t.fail();
-  }
-  return t.pass();
-});
-
-test.serial('Set settings, but not the owner', async t => {
-  let resAlt = JSON.parse(JSON.stringify(res));
-  resAlt.locals.ip = 'none';
-  let err, list;
-
-  [err, list] = await to(api.setSettings(req, resAlt));
-
-  if (err) {
-    console.log(err);
-    return t.pass();
-  }
-  return t.fail();
-});
 
 test('Duckduckgo search', async t => {
   let err, list;
