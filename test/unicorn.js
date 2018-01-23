@@ -30,7 +30,7 @@ const res = {
   }
 };
 
-test('Test if a file exist', async t => {
+test.serial('Test if a file exist', async t => {
   let err, list;
   let fileExist = api.__get__('fileExist');
   [err, list] = await to(fileExist(`${__dirname}/../db/items/sydh8xaxz.db.json`));
@@ -43,7 +43,7 @@ test('Test if a file exist', async t => {
   return t.fail();
 });
 
-test('Test a file does not exist', async t => {
+test.serial('Test a file does not exist', async t => {
   let err, list;
   let fileExist = api.__get__('fileExist');
   [err, list] = await to(fileExist(`${__dirname}/../db/items/thisFileDoesntExist.db.json`));
@@ -56,7 +56,7 @@ test('Test a file does not exist', async t => {
   return t.fail();
 });
 
-test('Add new item on new list.', async t => {
+test.serial('Add new item on new list.', async t => {
   let err, list;
   [err, list] = await to(api.addNewList(req, res));
 
@@ -66,17 +66,18 @@ test('Add new item on new list.', async t => {
   return t.pass();
 });
 
-test('Add new item on new list, item missing', async t => {
+test.serial('Add new item on new list, item missing', async t => {
   let err, list;
   [err, list] = await to(api.addNewList({}, res));
 
   if (err) {
+    console.log(err);
     return t.pass();
   }
   return t.fail();
 });
 
-test('Add attributes', async t => {
+test.serial('Add attributes', async t => {
   let err, list;
   [err, list] = await to(api.addAttributes(req, res));
 
@@ -86,7 +87,17 @@ test('Add attributes', async t => {
   return t.pass();
 });
 
-test('Add item to an existing list', async t => {
+test.serial('Add attributes, no listid', async t => {
+  let err, list;
+  [err, list] = await to(api.addAttributes({}, res));
+
+  if (err) {
+    return t.pass();
+  }
+  return t.fail();
+});
+
+test.serial('Add item to an existing list', async t => {
   let err, list;
   let addItem = api.__get__('addItem');
   [err, list] = await to(addItem(req, res));
@@ -98,7 +109,7 @@ test('Add item to an existing list', async t => {
   return t.pass();
 });
 
-test('Vote for an item', async t => {
+test.serial('Vote for an item', async t => {
   let err, list;
   [err, list] = await to(api.vote(req, res));
 
@@ -122,25 +133,6 @@ test.serial('Set settings, but not the owner', async t => {
     return t.pass();
   }
   return t.fail();
-});
-
-test.serial('Set settings, I am the owner', async t => {
-  let err, list;
-  let resAlt = JSON.parse(JSON.stringify(res));
-  resAlt.locals.ip = 'haship';
-  [err, list] = await to(api.setSettings(req, resAlt));
-
-  if (err) {
-    console.log(err);
-    return t.fail();
-  }
-  const reqAlt = JSON.parse(JSON.stringify(req));
-  reqAlt.body.slug = 'sydh8xaxz';
-  let setSlug = api.__get__('setSlug');
-
-  [err, list] = await to(setSlug(reqAlt, res, `${__dirname}/../db/items/${testID}.db.json`));
-
-  return t.pass();
 });
 
 test('Get List', async t => {
@@ -187,6 +179,22 @@ test.serial('Set a slug, URL already taken', async t => {
   }
 
   return t.fail();
+});
+
+test.serial('Set settings, I am the owner', async t => {
+  let err, list;
+  let resAlt = JSON.parse(JSON.stringify(res));
+  resAlt.locals.ip = 'haship';
+  const reqAlt = JSON.parse(JSON.stringify(req));
+  reqAlt.body.slug = 'sydh8xaxz';
+
+  [err, list] = await to(api.setSettings(reqAlt, resAlt));
+
+  if (err) {
+    console.log(err);
+    return t.fail();
+  }
+  return t.pass();
 });
 
 test('Duckduckgo search', async t => {

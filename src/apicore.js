@@ -24,7 +24,7 @@ const dbpath = (type, id) => {
 };
 
 const addNewList = async (req, res) => {
-  if (!req.body.item) {
+  if (typeof req.body.item === undefined) {
     return Promise.reject('No item given');
   }
 
