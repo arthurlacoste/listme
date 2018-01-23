@@ -119,22 +119,6 @@ test.serial('Vote for an item', async t => {
   return t.pass();
 });
 
-
-
-test.serial('Set settings, but not the owner', async t => {
-  let resAlt = JSON.parse(JSON.stringify(res));
-  resAlt.locals.ip = 'none';
-  let err, list;
-
-  [err, list] = await to(api.setSettings(req, resAlt));
-
-  if (err) {
-    console.log(err);
-    return t.pass();
-  }
-  return t.fail();
-});
-
 test.serial('Get List', async t => {
   let err, list;
 
@@ -195,6 +179,20 @@ test.serial('Set settings, I am the owner', async t => {
     return t.fail();
   }
   return t.pass();
+});
+
+test.serial('Set settings, but not the owner', async t => {
+  let resAlt = JSON.parse(JSON.stringify(res));
+  resAlt.locals.ip = 'none';
+  let err, list;
+
+  [err, list] = await to(api.setSettings(req, resAlt));
+
+  if (err) {
+    console.log(err);
+    return t.pass();
+  }
+  return t.fail();
 });
 
 test('Duckduckgo search', async t => {
