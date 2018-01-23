@@ -66,6 +66,16 @@ test('Add new item on new list.', async t => {
   return t.pass();
 });
 
+test('Add new item on new list, item missing', async t => {
+  let err, list;
+  [err, list] = await to(api.addNewList({}, res));
+
+  if (err) {
+    return t.pass();
+  }
+  return t.fail();
+});
+
 test('Add attributes', async t => {
   let err, list;
   [err, list] = await to(api.addAttributes(req, res));
@@ -82,6 +92,7 @@ test('Add item to an existing list', async t => {
   [err, list] = await to(addItem(req, res));
 
   if (err) {
+    console.log(err);
     return t.fail();
   }
   return t.pass();
@@ -100,10 +111,8 @@ test('Vote for an item', async t => {
 
 
 test.serial('Set settings, but not the owner', async t => {
-  let resAlt = Object.assign({}, res);
+  let resAlt = JSON.parse(JSON.stringify(res));
   resAlt.locals.ip = 'none';
-
-
   let err, list;
 
   [err, list] = await to(api.setSettings(req, resAlt));
@@ -117,7 +126,7 @@ test.serial('Set settings, but not the owner', async t => {
 
 test.serial('Set settings, I am the owner', async t => {
   let err, list;
-  let resAlt = Object.assign({}, res);
+  let resAlt = JSON.parse(JSON.stringify(res));
   resAlt.locals.ip = 'haship';
   [err, list] = await to(api.setSettings(req, resAlt));
 
@@ -125,7 +134,7 @@ test.serial('Set settings, I am the owner', async t => {
     console.log(err);
     return t.fail();
   }
-  const reqAlt = Object.assign({}, req);
+  const reqAlt = JSON.parse(JSON.stringify(req));
   reqAlt.body.slug = 'sydh8xaxz';
   let setSlug = api.__get__('setSlug');
 
@@ -149,13 +158,13 @@ test('Get List', async t => {
 test.serial('Set a slug', async t => {
   let err, list;
   let setSlug = api.__get__('setSlug');
-  const reqAlt = Object.assign({}, req);
+  const reqAlt = JSON.parse(JSON.stringify(req));
   reqAlt.body.slug = testID;
 
   [err, list] = await to(setSlug(reqAlt, res, `${__dirname}/../db/items/sydh8xaxz.db.json`));
 
   if (err) {
-    console.log(err)
+    console.log(err);
     return t.fail();
   }
 
@@ -168,7 +177,7 @@ test.serial('Set a slug', async t => {
 test.serial('Set a slug, URL already taken', async t => {
   let err, list;
   let setSlug = api.__get__('setSlug');
-  const reqAlt = Object.assign({}, req);
+  const reqAlt = JSON.parse(JSON.stringify(req));
   reqAlt.body.slug = 'sydh8xaxz';
   [err, list] = await to(setSlug(reqAlt, res, `${__dirname}/../db/items/${testID}.db.json`));
 
