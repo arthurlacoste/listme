@@ -168,12 +168,17 @@ const setSettings = async (req, res) => {
     const adapter = new FileAsync(path);
     console.log('PATH', path)
     const ip = res.locals.ip;
+    console.log('RES.LOCALS.IP', res.locals.ip)
 
     const db = await low(adapter);
     let list = db.getState();
 
     // If it's owner, he can edit settings
+    console.log('LIST.IP', list.ip)
+    console.log('IP', ip)
     if (ip === list.ip) {
+      console.log('CONDITION PASSED')
+      console.log('CONDITION PASSED')
       if (req.body.name) {
         list.name = req.body.name;
       }
