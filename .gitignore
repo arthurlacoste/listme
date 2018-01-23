@@ -12,3 +12,5 @@ build/
 package-lock.json
 
 *db.json
+
+!Sydh8XAXz.db.json
