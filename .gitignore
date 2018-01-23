@@ -1,15 +1,15 @@
 node_modules/
 dist/
 build/
-
 # Local development
 *.env
 *.dev
-.DS_Store
-
 *.lock
 *.log
 package-lock.json
+.DS_Store
+.nyc_output
+coverage
 
 *db.json
 

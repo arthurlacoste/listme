@@ -1,10 +1,9 @@
-[![NPM Version][npm-version]][npm-url]
-[![travis][travis-badge]][travis-url]
-[![xo][xo-badge]][xo-url]
-
-# listme
-
-Listme is a tool to make lists and share with your friends.
+<p align="center">
+  <img src="static/assets/img/listme-title-black.svg" height="100">
+  <p align="center">A tool to make lists and share them with your friends.<p>
+  <p align="center"><a href="https://npmjs.org/package/listme"><img src="https://img.shields.io/npm/v/listme.svg" alt="NPM Version"></a> <a href="https://github.com/sindresorhus/xo"><img src="https://img.shields.io/badge/code_style-XO-5ed9c7.svg" alt="XO code style"></a> <a href="https://travis-ci.org/arthurlacoste/listme"><img src="https://secure.travis-ci.org/arthurlacoste/listme.svg" alt="build status"></a>
+  </p>
+</p>
 
 Each element can be upvoted or downvoted. Usefull for :
 - a movie list with your girlfriend
@@ -45,10 +44,3 @@ npm start
 ```
 
 Photo by Tim Gouw on Unsplash
-
-[npm-version]:https://img.shields.io/npm/v/listme.svg
-[npm-url]: https://npmjs.org/package/listme
-[travis-badge]: http://img.shields.io/travis/arthurlacoste/listme.svg
-[travis-url]: https://travis-ci.org/arthurlacoste/listme
-[xo-badge]: https://img.shields.io/badge/code_style-XO-5ed9c7.svg
-[xo-url]: https://github.com/sindresorhus/xo

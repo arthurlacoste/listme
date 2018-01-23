@@ -3,4 +3,9 @@ node_js:
   - 'node'
 before_script:
  - npm install ava xo
-script: xo src/ | npm run test:ava
+script:
+ - xo src/
+ - npm run test:ava
+ - nyc ava
+after_success:
+ - './node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls'
