@@ -7,7 +7,7 @@ const shortid = require('shortid');
 const api = rewire('../src/apicore.js');
 
 const ip = 'u';
-const testID = shortid.generate();
+const testID = 'test-' + shortid.generate();
 
 const req = {
   body: {
@@ -16,7 +16,7 @@ const req = {
     slug: testID
   },
   params: {
-    listid: 'Sydh8XAXz',
+    listid: 'sydh8xaxz',
     itemid: '0',
     vote: 1,
     item: 'orange'
@@ -106,7 +106,13 @@ test('Set a slug', async t => {
     console.log(err)
       return t.fail();
   }
+  const reqAlt = req;
+  reqAlt.body.slug = 'Sydh8XAXz';
+  [err, list] = await to(setSlug(reqAlt, res, `${__dirname}/../db/items/${testID}.db.json`));
+
   return t.pass();
+
+
 });
 
 test('Duckduckgo search', async t => {
