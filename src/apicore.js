@@ -172,6 +172,7 @@ const setSettings = async (req, res) => {
 
     const db = await low(adapter);
     let list = db.getState();
+    console.log('LIST', list)
 
     // If it's owner, he can edit settings
     console.log('LIST.IP', list.ip)
