@@ -2,6 +2,7 @@
   <img src="static/assets/img/listme-title-black.svg" height="100">
   <p align="center">A tool to make lists and share them with your friends.<p>
   <p align="center"><a href="https://npmjs.org/package/listme"><img src="https://img.shields.io/npm/v/listme.svg" alt="NPM Version"></a> <a href="https://github.com/sindresorhus/xo"><img src="https://img.shields.io/badge/code_style-XO-5ed9c7.svg" alt="XO code style"></a> <a href="https://travis-ci.org/arthurlacoste/listme"><img src="https://secure.travis-ci.org/arthurlacoste/listme.svg" alt="build status"></a>
+  <a href='https://coveralls.io/github/arthurlacoste/listme?branch=master'><img src='https://coveralls.io/repos/github/arthurlacoste/listme/badge.svg?branch=master' alt='Coverage Status' /></a>
   </p>
 </p>
 

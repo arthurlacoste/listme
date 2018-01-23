@@ -1,20 +1,25 @@
 const test = require('ava');
 const md5 = require('md5');
-const api = require('../src/apicore.js');
 const {to} = require('await-to-js');
+const rewire = require('rewire');
+const shortid = require('shortid');
+
+const api = rewire('../src/apicore.js');
 
 const ip = 'u';
+const testID = shortid.generate();
 
 const req = {
   body: {
     item: 'item',
     check: '1',
-    slug: 'human'
+    slug: testID
   },
   params: {
     listid: 'Sydh8XAXz',
     itemid: '0',
-    vote: 1
+    vote: 1,
+    item: 'orange'
   }
 };
 
@@ -46,7 +51,8 @@ test('Add attributes', async t => {
 
 test('Add item to an existing list', async t => {
   let err, list;
-  [err, list] = await to(api.addItem(req, res));
+  let addItem = api.__get__('addItem');
+  [err, list] = await to(addItem(req, res));
 
   if (err) {
       return t.fail();
@@ -63,6 +69,8 @@ test('Vote for an item', async t => {
   }
   return t.pass();
 });
+
+
 
 test('Set settings, but not the owner', async t => {
   const resAlt = res;
@@ -82,6 +90,29 @@ test('Get List', async t => {
   let err, list;
 
 	[err, list] = await to(api.getList(req, res));
+
+	if (err) {
+      return t.fail();
+	}
+	return t.pass();
+});
+
+test('Set a slug', async t => {
+  let err, list;
+  let setSlug = api.__get__('setSlug');
+  [err, list] = await to(setSlug(req, res, `${__dirname}/../db/items/Sydh8XAXz.db.json`));
+
+  if (err) {
+    console.log(err)
+      return t.fail();
+  }
+  return t.pass();
+});
+
+test('Duckduckgo search', async t => {
+  let err, list;
+
+	[err, list] = await to(api.ddgSearch(req, res));
 
 	if (err) {
       return t.fail();

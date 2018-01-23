@@ -22,6 +22,7 @@ const striptag = /(<([^>]+)>)/ig;
 
 // Construct path to db file
 const dbpath = (type, id) => {
+  console.log(`${__dirname}/../db/${type}/${id}.db.json`);
 	return `${__dirname}/../db/${type}/${id}.db.json`;
 };
 
@@ -137,8 +138,8 @@ const vote = async (req, res) => {
 };
 
 // Set custom slug if is not already exists
-const setSlug = async (req, res, path) => {
-	const adapter = new FileAsync(path);
+const setSlug = async (req, res, currentPath) => {
+	const adapter = new FileAsync(currentPath);
 	const ndb = await low(adapter);
 	const list = ndb.getState();
 	list.id = slugme(req.body.slug);
@@ -154,7 +155,7 @@ const setSlug = async (req, res, path) => {
 	const ldb = await low(newAdapter);
 	await ldb.setState(list).write();
 
-	await fs.unlink(path);
+	await fs.unlink(currentPath);
 	return list;
 };
 
@@ -215,7 +216,7 @@ const getList = async (req, res) => {
 };
 
 // Get all results from duckduckgo
-const ddgSearch = (req, res, callback) => {
+const ddgSearch = async (req, res, callback) => {
 	const item = req.params.item.toString();
 
 	const options = {
@@ -226,9 +227,9 @@ const ddgSearch = (req, res, callback) => {
 
 	ddg.query(item, options, (err, data) => {
 		if (err) {
-			return callback(err);
+			return Promise.reject(err);
 		}
-		return callback(null, data);
+		return (data);
 	});
 };
 
